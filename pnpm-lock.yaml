@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@excalidraw/excalidraw': ^0.15.2
   '@logseq/libs': ^0.0.14
   '@semantic-release/changelog': ^6.0.1
   '@semantic-release/exec': ^6.0.3
@@ -12,6 +13,7 @@ specifiers:
   '@vitejs/plugin-react': ^2.2.0
   antd: ^5.0.2
   autoprefixer: ^10.4.2
+  dayjs: ^1.11.7
   postcss: ^8.4.5
   react: ^18.2.0
   react-dom: ^18.2.0
@@ -22,8 +24,10 @@ specifiers:
   vite-plugin-importer: ^0.2.5
 
 dependencies:
+  '@excalidraw/excalidraw': 0.15.2_biqbaboplfbrettd7655fr4n2y
   '@logseq/libs': 0.0.14
   antd: 5.4.5_biqbaboplfbrettd7655fr4n2y
+  dayjs: 1.11.7
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
 
@@ -424,6 +428,16 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@excalidraw/excalidraw/0.15.2_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-rTI02kgWSTXiUdIkBxt9u/581F3eXcqQgJdIxmz54TFtG3ughoxO5fr4t7Fr2LZIturBPqfocQHGKZ0t2KLKgw==}
+    peerDependencies:
+      react: ^17.0.2 || ^18.2.0
+      react-dom: ^17.0.2 || ^18.2.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
 
   /@jridgewell/gen-mapping/0.3.3:
     resolution: {integrity: sha512-HLhSWOLRi875zjjMG/r+Nv0oCW8umGb0BgEhyX3dDX3egwZtB8PqLnjz3yedt8R5StBrzcg4aBpnh8UA9D1BoQ==}
