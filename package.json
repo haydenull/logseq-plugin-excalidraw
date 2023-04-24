@@ -1,0 +1,36 @@
+{
+  "name": "logseq-plugin-react-boilerplate",
+  "version": "1.2.0",
+  "main": "dist/index.html",
+  "logseq": {
+    "id": "logseq-plugin-react-boilerplate",
+    "icon": "logo.png"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@logseq/libs": "^0.0.10",
+    "antd": "^5.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/exec": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/npm": "^8.0.3",
+    "@types/node": "^18.11.9",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.9",
+    "@vitejs/plugin-react": "^2.2.0",
+    "autoprefixer": "^10.4.2",
+    "postcss": "^8.4.5",
+    "tailwindcss": "^3.2.4",
+    "typescript": "^4.9.3",
+    "vite": "^3.2.4",
+    "vite-plugin-importer": "^0.2.5"
+  }
+}
