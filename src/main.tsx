@@ -1,30 +1,29 @@
-import '@logseq/libs'
-import React from 'react'
-import ReactDOM from 'react-dom'
-import App from './App'
-import './index.css'
+import "@logseq/libs";
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import "./index.css";
 
-const isDevelopment = import.meta.env.DEV
+const isDevelopment = import.meta.env.DEV;
 
 if (isDevelopment) {
-  renderApp('browser')
+  renderApp("browser");
 } else {
-  console.log('=== logseq-plugin-react-boilerplate loaded ===')
+  console.log("=== logseq-plugin-react-excalidraw loaded ===");
   logseq.ready(() => {
-
     logseq.provideModel({
       show() {
-        renderApp('logseq')
-        logseq.showMainUI()
+        renderApp("logseq");
+        logseq.showMainUI();
       },
-    })
+    });
 
-    logseq.App.registerUIItem('toolbar', {
-      key: 'logseq-plugin-react-boilerplate',
-      template: '<a data-on-click="show" class="button"><i class="ti ti-window"></i></a>',
-    })
-
-  })
+    logseq.App.registerUIItem("toolbar", {
+      key: "logseq-plugin-react-excalidraw",
+      template:
+        '<a data-on-click="show" class="button"><i class="ti ti-window"></i></a>',
+    });
+  });
 }
 
 function renderApp(env: string) {
@@ -32,6 +31,6 @@ function renderApp(env: string) {
     <React.StrictMode>
       <App env={env} />
     </React.StrictMode>,
-    document.getElementById('root')
-  )
+    document.getElementById("root")
+  );
 }

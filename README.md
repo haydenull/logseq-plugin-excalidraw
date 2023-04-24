@@ -1,8 +1,8 @@
-# logseq-plugin-react-boilerplate
-> logseq-plugin-react-boilerplate with vite react typescript tailwindcss antd
+# logseq-plugin-react-excalidraw
+> logseq-plugin-react-excalidraw with vite react typescript tailwindcss antd
 
-[![latest release version](https://img.shields.io/github/v/release/haydenull/logseq-plugin-react-boilerplate)](https://github.com/haydenull/logseq-plugin-react-boilerplate/releases)
-[![License](https://img.shields.io/github/license/haydenull/logseq-plugin-react-boilerplate?color=blue)](https://github.com/haydenull/logseq-plugin-react-boilerplate/blob/main/LICENSE)
+[![latest release version](https://img.shields.io/github/v/release/haydenull/logseq-plugin-react-excalidraw)](https://github.com/haydenull/logseq-plugin-react-excalidraw/releases)
+[![License](https://img.shields.io/github/license/haydenull/logseq-plugin-react-excalidraw?color=blue)](https://github.com/haydenull/logseq-plugin-react-excalidraw/blob/main/LICENSE)
 
 ## Demo
 ![demo](./demo.gif)
