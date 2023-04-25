@@ -15,7 +15,7 @@ const App: React.FC<{ mode: Mode; pageName: string }> = ({
         onClick={() => logseq.hideMainUI()}
       ></div>
       {/* <div className="w-5/6 h-5/6 z-0 bg-gradient-to-tr from-green-300 via-green-500 to-green-700 flex flex-col items-center justify-center">
-        <h1 className="font-bold text-4xl">logseq-plugin-react-excalidraw</h1>
+        <h1 className="font-bold text-4xl">logseq-plugin-excalidraw</h1>
       </div> */}
       {mode === "preview" ? (
         <Preview pageName={pageName} />

@@ -1,9 +1,9 @@
 {
-  "name": "logseq-plugin-react-excalidraw",
+  "name": "logseq-plugin-excalidraw",
   "version": "0.0.1",
   "main": "dist/index.html",
   "logseq": {
-    "id": "logseq-plugin-react-excalidraw",
+    "id": "logseq-plugin-excalidraw",
     "icon": "logo.png"
   },
   "scripts": {
@@ -16,6 +16,7 @@
     "@logseq/libs": "^0.0.14",
     "antd": "^5.0.2",
     "dayjs": "^1.11.7",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

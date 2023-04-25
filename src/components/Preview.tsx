@@ -9,7 +9,7 @@ const Preview: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
 
   useEffect(() => {
     if (pageName) {
-      getExcalidrawDataFromPage(pageName).then(async (excalidrawData) => {
+      getExcalidrawDataFromPage(pageName).then(async ({ excalidrawData }) => {
         const svg = await exportToSvg({
           elements: excalidrawData?.elements ?? [],
           appState: excalidrawData?.appState ?? {},

@@ -9,7 +9,7 @@ import { getExcalidrawData, listenEsc } from "./util";
 
 const DEMO_FILE_ORIGINAL_NAME = "excalidraw-2023-04-24-16-39-01";
 
-console.log("=== logseq-plugin-react-excalidraw loaded ===");
+console.log("=== logseq-plugin-excalidraw loaded ===");
 logseq.ready(() => {
   logseq.provideModel({
     edit(e) {
@@ -27,7 +27,7 @@ logseq.ready(() => {
   });
 
   logseq.App.registerUIItem("toolbar", {
-    key: "logseq-plugin-react-excalidraw",
+    key: "logseq-plugin-excalidraw",
     template:
       '<a data-on-click="show" class="button"><i class="ti ti-window"></i></a>',
   });
@@ -78,7 +78,6 @@ logseq.ready(() => {
         appState: excalidrawData?.appState ?? {},
         files: null,
       });
-      console.log("[faiz:] === svg", svg);
 
       const id = `excalidraw-${fileName}-${slot}`;
       logseq.provideUI({
@@ -99,6 +98,7 @@ logseq.ready(() => {
       setTimeout(() => {
         // insert preview img
         svg.style.width = "100%";
+        svg.style.height = "200px";
         parent.document.getElementById(id)?.prepend(svg);
       }, 0);
     }

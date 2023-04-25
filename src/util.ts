@@ -8,6 +8,13 @@ export const getExcalidrawData = (text: string) => {
   const match = text.match(/```json\n(.*)\n```/s);
   return match ? JSON.parse(match[1]) : null;
 };
+/**
+ * gen block data
+ * {xxx} --> ```json\n{xxx}\n```
+ */
+export const genBlockData = (excalidrawData: Record<string, unknown>) => {
+  return `\`\`\`json\n${JSON.stringify(excalidrawData)}\n\`\`\``;
+};
 
 export const getExcalidrawDataFromPage = async (srcPage: PageIdentity) => {
   console.log("[faiz:] === srcPage", srcPage);
@@ -15,7 +22,10 @@ export const getExcalidrawDataFromPage = async (srcPage: PageIdentity) => {
   console.log("[faiz:] === pageBlocks", pageBlocks);
   const codeBlock = pageBlocks?.[2];
   const excalidrawData = getExcalidrawData(codeBlock?.content);
-  return excalidrawData;
+  return {
+    excalidrawData,
+    block: codeBlock,
+  };
 };
 
 /**
