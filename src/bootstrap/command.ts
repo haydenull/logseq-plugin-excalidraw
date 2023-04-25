@@ -6,24 +6,6 @@ import { genBlockData } from "@/helper/util";
 import dayjs from "dayjs";
 
 const bootCommand = () => {
-  // command palette: create excalidraw
-  // logseq.App.registerCommandPalette(
-  //   {
-  //     key: "logseq-plugin-excalidraw:create",
-  //     label: "create excalidraw",
-  //   },
-  //   async (data) => {
-  //     const fileName = dayjs().format("excalidraw-YYYY-MM-DD-HH-mm-ss");
-  //     const file = await logseq.Editor.createPage(
-  //       fileName,
-  //       {
-  //         excalidraw: true,
-  //       },
-  //       { format: "markdown" }
-  //     );
-  //   }
-  // );
-
   // slash command: create excalidraw
   logseq.Editor.registerSlashCommand(
     "🎨 Excalidraw: Create New Draw",
@@ -40,6 +22,10 @@ const bootCommand = () => {
         await logseq.Editor.appendBlockInPage(
           page!.originalName,
           EXCALIDRAW_FILE_PROMPT
+        );
+        await logseq.Editor.appendBlockInPage(
+          page!.originalName,
+          `{{renderer excalidraw-menu, ${fileName}}}`
         );
         await logseq.Editor.appendBlockInPage(
           page!.originalName,

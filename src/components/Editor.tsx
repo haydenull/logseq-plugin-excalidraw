@@ -24,7 +24,7 @@ const Editor: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
     });
     if (blockUUIDRef.current)
       logseq.Editor.updateBlock(blockUUIDRef.current, blockData);
-  }, 2000);
+  }, 1000);
 
   useEffect(() => {
     getExcalidrawInfoFromPage(pageName).then((data) => {

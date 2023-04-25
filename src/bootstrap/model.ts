@@ -23,6 +23,14 @@ const bootModels = (renderApp: (props: RenderAppProps) => void) => {
       const { excalidrawData } = await getExcalidrawInfoFromPage(pageName);
       insertSVG(containerId, undefined, excalidrawData);
     },
+    async delete(e) {
+      const pageName = e.dataset.pageName;
+      if (!pageName) return logseq.UI.showMsg("pageName is required");
+      await logseq.Editor.deletePage(pageName);
+      logseq.UI.showMsg("Delete excalidraw file success", "success");
+      const uuid = e.dataset.blockId;
+      logseq.Editor.removeBlock(uuid);
+    },
   });
 };
 

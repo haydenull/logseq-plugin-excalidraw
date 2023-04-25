@@ -27,7 +27,7 @@ export const getExcalidrawInfoFromPage = async (
   console.log("[faiz:] === srcPage", srcPage);
   const pageBlocks = await logseq.Editor.getPageBlocksTree(srcPage);
   console.log("[faiz:] === pageBlocks", pageBlocks);
-  const codeBlock = pageBlocks?.[2];
+  const codeBlock = pageBlocks?.[3];
   const excalidrawData = getExcalidrawData(codeBlock?.content);
   return {
     excalidrawData: excalidrawData || DEFAULT_EXCALIDRAW_DATA,
@@ -44,4 +44,10 @@ export const listenEsc = (callback: () => void) => {
       callback();
     }
   });
+};
+
+export const createSVGElement = (svgString: string) => {
+  const parser = new DOMParser();
+  const svgDoc = parser.parseFromString(svgString, "image/svg+xml");
+  return svgDoc.documentElement;
 };
