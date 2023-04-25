@@ -13,7 +13,7 @@ const Preview: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
         const svg = await exportToSvg({
           elements: excalidrawData?.elements ?? [],
           appState: excalidrawData?.appState ?? {},
-          files: null,
+          files: excalidrawData?.files ?? null,
         });
         if (containerRef?.current) {
           containerRef.current.appendChild(svg);

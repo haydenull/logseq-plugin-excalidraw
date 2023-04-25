@@ -66,7 +66,7 @@ const bootRenderBlockImage = () => {
         const { excalidrawData } = await getExcalidrawInfoFromPage(pageName);
         console.log("[faiz:] === excalidrawData", excalidrawData);
 
-        const { elements, appState } = excalidrawData;
+        const { elements, appState, files } = excalidrawData;
         const id = `excalidraw-${pageName}-${slot}`;
 
         const isNewFile = elements?.length === 0 && appState === undefined;
@@ -75,9 +75,9 @@ const bootRenderBlockImage = () => {
           isNewFile
             ? NEW_FILE_EXCALIDRAW_DATA
             : {
-                elements: elements,
-                appState: appState,
-                files: null,
+                elements,
+                appState,
+                files,
               }
         );
 
