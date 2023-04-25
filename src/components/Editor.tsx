@@ -1,7 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Excalidraw } from "@excalidraw/excalidraw";
+import {
+  Excalidraw,
+  Button,
+  MainMenu,
+  WelcomeScreen,
+} from "@excalidraw/excalidraw";
 import { debounce } from "lodash";
-import { genBlockData, getExcalidrawDataFromPage } from "../util";
+import { TbLogout, TbBrandGithub } from "react-icons/tb";
+import { genBlockData, getExcalidrawInfoFromPage } from "../helper/util";
 
 const Editor: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
   pageName,
@@ -21,7 +27,7 @@ const Editor: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
   }, 2000);
 
   useEffect(() => {
-    getExcalidrawDataFromPage(pageName).then((data) => {
+    getExcalidrawInfoFromPage(pageName).then((data) => {
       setExcalidrawData(data?.excalidrawData);
       blockUUIDRef.current = data?.block?.uuid;
     });
@@ -36,14 +42,42 @@ const Editor: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
             scrollToContent: true,
           }}
           onChange={onExcalidrawChange}
-        />
+          renderTopRightUI={() => (
+            <Button
+              onSelect={() => logseq.hideMainUI()}
+              style={{ width: "38px", height: "38px", color: "#666" }}
+              title="Exit"
+            >
+              <TbLogout />
+            </Button>
+          )}
+        >
+          <MainMenu>
+            <MainMenu.Item
+              icon={<TbBrandGithub />}
+              onSelect={() =>
+                logseq.App.openExternalLink(
+                  "https://github.com/haydenull/logseq-plugin-excalidraw"
+                )
+              }
+            >
+              Github
+            </MainMenu.Item>
+            <MainMenu.DefaultItems.ClearCanvas />
+            <MainMenu.DefaultItems.ToggleTheme />
+            <MainMenu.DefaultItems.ChangeCanvasBackground />
+          </MainMenu>
+          <WelcomeScreen>
+            <WelcomeScreen.Hints.ToolbarHint />
+            <WelcomeScreen.Center>
+              <WelcomeScreen.Center.Logo></WelcomeScreen.Center.Logo>
+              <WelcomeScreen.Center.Heading>
+                Logseq Excalidraw Plugin
+              </WelcomeScreen.Center.Heading>
+            </WelcomeScreen.Center>
+          </WelcomeScreen>
+        </Excalidraw>
       )}
-      {/* <Excalidraw
-        initialData={{
-          appState: { zenModeEnabled: true, viewBackgroundColor: "#a5d8ff" },
-          scrollToContent: true,
-        }}
-      /> */}
     </div>
   );
 };

@@ -1,11 +1,13 @@
-import { PageIdentity } from "@logseq/libs/dist/LSPlugin.user";
+import { ExcalidrawData } from "@/type";
+import { BlockEntity, PageIdentity } from "@logseq/libs/dist/LSPlugin.user";
+import { DEFAULT_EXCALIDRAW_DATA } from "./constants";
 
 /**
  * get excalidraw data
  * ```json\n{xxx}\n``` --> {xxx}
  */
-export const getExcalidrawData = (text: string) => {
-  const match = text.match(/```json\n(.*)\n```/s);
+export const getExcalidrawData = (text?: string): ExcalidrawData | null => {
+  const match = text?.match(/```json\n(.*)\n```/s);
   return match ? JSON.parse(match[1]) : null;
 };
 /**
@@ -16,14 +18,19 @@ export const genBlockData = (excalidrawData: Record<string, unknown>) => {
   return `\`\`\`json\n${JSON.stringify(excalidrawData)}\n\`\`\``;
 };
 
-export const getExcalidrawDataFromPage = async (srcPage: PageIdentity) => {
+export const getExcalidrawInfoFromPage = async (
+  srcPage: PageIdentity
+): Promise<{
+  excalidrawData: ExcalidrawData;
+  block: BlockEntity;
+}> => {
   console.log("[faiz:] === srcPage", srcPage);
   const pageBlocks = await logseq.Editor.getPageBlocksTree(srcPage);
   console.log("[faiz:] === pageBlocks", pageBlocks);
   const codeBlock = pageBlocks?.[2];
   const excalidrawData = getExcalidrawData(codeBlock?.content);
   return {
-    excalidrawData,
+    excalidrawData: excalidrawData || DEFAULT_EXCALIDRAW_DATA,
     block: codeBlock,
   };
 };

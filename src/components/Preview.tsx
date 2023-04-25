@@ -1,5 +1,5 @@
-import React, { ReactElement, useEffect, useRef, useState } from "react";
-import { getExcalidrawDataFromPage } from "../util";
+import React, { useEffect, useRef } from "react";
+import { getExcalidrawInfoFromPage } from "../helper/util";
 import { exportToSvg } from "@excalidraw/excalidraw";
 
 const Preview: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
@@ -9,7 +9,7 @@ const Preview: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
 
   useEffect(() => {
     if (pageName) {
-      getExcalidrawDataFromPage(pageName).then(async ({ excalidrawData }) => {
+      getExcalidrawInfoFromPage(pageName).then(async ({ excalidrawData }) => {
         const svg = await exportToSvg({
           elements: excalidrawData?.elements ?? [],
           appState: excalidrawData?.appState ?? {},

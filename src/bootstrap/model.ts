@@ -1,0 +1,29 @@
+import { getExcalidrawInfoFromPage } from "@/helper/util";
+import { RenderAppProps } from "@/main";
+import { insertSVG } from "./renderBlockImage";
+
+const bootModels = (renderApp: (props: RenderAppProps) => void) => {
+  logseq.provideModel({
+    edit(e) {
+      const pageName = e.dataset.pageName;
+      if (!pageName) return logseq.UI.showMsg("pageName is required");
+      renderApp({ mode: "edit", pageName });
+      logseq.showMainUI();
+    },
+    fullscreen(e) {
+      const pageName = e.dataset.pageName;
+      if (!pageName) return logseq.UI.showMsg("pageName is required");
+      renderApp({ mode: "preview", pageName });
+      logseq.showMainUI();
+    },
+    async refresh(e) {
+      const pageName = e.dataset.pageName;
+      const containerId = e.dataset.containerId;
+      if (!pageName) return logseq.UI.showMsg("pageName is required");
+      const { excalidrawData } = await getExcalidrawInfoFromPage(pageName);
+      insertSVG(containerId, undefined, excalidrawData);
+    },
+  });
+};
+
+export default bootModels;
