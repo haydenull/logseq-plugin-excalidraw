@@ -1,6 +1,6 @@
 {
   "name": "Excalidraw",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "dist/index.html",
   "logseq": {
     "id": "logseq-plugin-excalidraw",
