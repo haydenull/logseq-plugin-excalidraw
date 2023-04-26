@@ -5,6 +5,8 @@ import {
   MainMenu,
   WelcomeScreen,
 } from "@excalidraw/excalidraw";
+import type { ExcalidrawElement } from "@excalidraw/excalidraw/types/element/types";
+import type { AppState, BinaryFiles } from "@excalidraw/excalidraw/types/types";
 import { debounce } from "lodash";
 import { TbLogout, TbBrandGithub } from "react-icons/tb";
 import {
@@ -20,6 +22,7 @@ import {
 } from "@/bootstrap/excalidrawLibraryItems";
 
 type Theme = "light" | "dark";
+const INTERVAL = 300;
 
 const Editor: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
   pageName,
@@ -28,21 +31,50 @@ const Editor: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
   const [libraryItems, setLibraryItems] = useState<LibraryItems>();
   const [theme, setTheme] = useState<Theme>();
   const blockUUIDRef = useRef<string>();
+  const currentExcalidrawDataRef = useRef<ExcalidrawData>();
 
-  // save excalidraw data to page
-  const onExcalidrawChange = debounce((excalidrawElements, appState, files) => {
-    const blockData = genBlockData({
-      ...excalidrawData,
-      elements: excalidrawElements,
-      appState: getMinimalAppState(appState),
-      files,
-    });
-    if (blockUUIDRef.current)
-      logseq.Editor.updateBlock(blockUUIDRef.current, blockData);
-  }, 1000);
+  // save excalidraw data to currentExcalidrawDataRef
+  const onExcalidrawChange = debounce(
+    (elements: ExcalidrawElement[], appState: AppState, files: BinaryFiles) => {
+      // const blockData = genBlockData({
+      //   ...excalidrawData,
+      //   elements: excalidrawElements,
+      //   appState: getMinimalAppState(appState),
+      //   files,
+      // });
+      // if (blockUUIDRef.current)
+      //   logseq.Editor.updateBlock(blockUUIDRef.current, blockData);
+      console.log("[faiz:] === elements", elements);
+      console.log("[faiz:] === files", files);
+      currentExcalidrawDataRef.current = {
+        elements,
+        appState,
+        files,
+      };
+    },
+    INTERVAL
+  );
   // save library items to page
   const onLibraryChange = (items: LibraryItems) => {
     updateExcalidrawLibraryItems(items);
+  };
+  // save excalidraw data to page
+  const onClickClose = () => {
+    setTimeout(async () => {
+      if (currentExcalidrawDataRef.current && blockUUIDRef.current) {
+        console.log("[faiz:] === start save");
+        const { elements, appState, files } = currentExcalidrawDataRef.current;
+        const blockData = genBlockData({
+          ...excalidrawData,
+          elements,
+          appState: getMinimalAppState(appState!),
+          files,
+        });
+        await logseq.Editor.updateBlock(blockUUIDRef.current, blockData);
+        console.log("[faiz:] === end save");
+        logseq.hideMainUI();
+      }
+    }, INTERVAL + 100);
   };
 
   // initialize excalidraw data
@@ -83,7 +115,7 @@ const Editor: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
           onLibraryChange={onLibraryChange}
           renderTopRightUI={() => (
             <Button
-              onSelect={() => logseq.hideMainUI()}
+              onSelect={onClickClose}
               style={{ width: "38px", height: "38px", color: "#666" }}
               title="Exit"
             >
