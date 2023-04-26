@@ -7,7 +7,11 @@ import {
 } from "@excalidraw/excalidraw";
 import { debounce } from "lodash";
 import { TbLogout, TbBrandGithub } from "react-icons/tb";
-import { genBlockData, getExcalidrawInfoFromPage } from "../helper/util";
+import {
+  genBlockData,
+  getExcalidrawInfoFromPage,
+  getMinimalAppState,
+} from "@/helper/util";
 import { ExcalidrawData } from "@/type";
 
 const Editor: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
@@ -20,7 +24,7 @@ const Editor: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
     const blockData = genBlockData({
       ...excalidrawData,
       elements: excalidrawElements,
-      appState,
+      appState: getMinimalAppState(appState),
       files,
     });
     if (blockUUIDRef.current)
@@ -39,7 +43,9 @@ const Editor: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
         <Excalidraw
           initialData={{
             elements: excalidrawData?.elements || [],
-            appState: excalidrawData?.appState || {},
+            appState: excalidrawData?.appState
+              ? getMinimalAppState(excalidrawData.appState)
+              : {},
             files: excalidrawData?.files || undefined,
             scrollToContent: true,
           }}

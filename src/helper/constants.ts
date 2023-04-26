@@ -1,4 +1,5 @@
-import { ExcalidrawData } from "@/type";
+import { type AppState } from "@excalidraw/excalidraw/types/types";
+import { type ExcalidrawData } from "@/type";
 
 export const DEFAULT_EXCALIDRAW_DATA: ExcalidrawData = {
   elements: [],
@@ -56,3 +57,11 @@ export const NEW_FILE_EXCALIDRAW_DATA: ExcalidrawData = {
   ],
   files: null,
 };
+
+/**
+ * The appState properties that need to be stored
+ */
+export const APP_STATE_PROPERTIES: Array<keyof AppState> = [
+  "gridSize",
+  "viewBackgroundColor",
+];

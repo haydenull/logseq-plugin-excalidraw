@@ -1,6 +1,11 @@
-import { ExcalidrawData } from "@/type";
-import { BlockEntity, PageIdentity } from "@logseq/libs/dist/LSPlugin.user";
-import { DEFAULT_EXCALIDRAW_DATA } from "./constants";
+import { pick } from "lodash";
+import type { ExcalidrawData } from "@/type";
+import type {
+  BlockEntity,
+  PageIdentity,
+} from "@logseq/libs/dist/LSPlugin.user";
+import { APP_STATE_PROPERTIES, DEFAULT_EXCALIDRAW_DATA } from "./constants";
+import type { AppState } from "@excalidraw/excalidraw/types/types";
 
 /**
  * get excalidraw data
@@ -50,4 +55,11 @@ export const createSVGElement = (svgString: string) => {
   const parser = new DOMParser();
   const svgDoc = parser.parseFromString(svgString, "image/svg+xml");
   return svgDoc.documentElement;
+};
+
+/**
+ * Extract some properties from appState
+ */
+export const getMinimalAppState = (appState: AppState) => {
+  return pick(appState, APP_STATE_PROPERTIES);
 };
