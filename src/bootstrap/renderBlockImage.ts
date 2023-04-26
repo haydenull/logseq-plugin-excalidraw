@@ -1,5 +1,5 @@
-import { NEW_FILE_EXCALIDRAW_DATA } from "@/helper/constants";
-import { getExcalidrawInfoFromPage } from "@/helper/util";
+import { NEW_FILE_EXCALIDRAW_DATA } from "@/lib/constants";
+import { getExcalidrawInfoFromPage } from "@/lib/utils";
 import { ExcalidrawData } from "@/type";
 import { exportToSvg } from "@excalidraw/excalidraw";
 

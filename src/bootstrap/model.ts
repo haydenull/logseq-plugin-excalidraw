@@ -1,4 +1,4 @@
-import { getExcalidrawInfoFromPage } from "@/helper/util";
+import { getExcalidrawInfoFromPage } from "@/lib/utils";
 import { RenderAppProps } from "@/main";
 import { insertSVG } from "./renderBlockImage";
 

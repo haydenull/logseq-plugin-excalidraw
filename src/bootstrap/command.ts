@@ -1,8 +1,8 @@
 import {
   DEFAULT_EXCALIDRAW_DATA,
   EXCALIDRAW_FILE_PROMPT,
-} from "@/helper/constants";
-import { genBlockData } from "@/helper/util";
+} from "@/lib/constants";
+import { genBlockData } from "@/lib/utils";
 import dayjs from "dayjs";
 
 const bootCommand = () => {

@@ -1,13 +1,13 @@
 import "@logseq/libs";
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import EditorApp from "@/app/Editor";
 import PreviewApp from "@/app/Preview";
 import bootModels from "@/bootstrap/model";
 import bootRenderBlockImage from "@/bootstrap/renderBlockImage";
 import bootCommand from "@/bootstrap/command";
 import bootExcalidrawLibraryItems from "./bootstrap/excalidrawLibraryItems";
+import "./index.css";
 
 console.log("=== logseq-plugin-excalidraw loaded ===");
 logseq.ready(() => {

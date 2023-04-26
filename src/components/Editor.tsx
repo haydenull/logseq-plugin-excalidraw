@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
 import {
   Excalidraw,
   Button,
@@ -13,7 +14,7 @@ import {
   genBlockData,
   getExcalidrawInfoFromPage,
   getMinimalAppState,
-} from "@/helper/util";
+} from "@/lib/utils";
 import type { ExcalidrawData } from "@/type";
 import type { LibraryItems } from "@excalidraw/excalidraw/types/types";
 import {
@@ -32,6 +33,8 @@ const Editor: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
   const [theme, setTheme] = useState<Theme>();
   const blockUUIDRef = useRef<string>();
   const currentExcalidrawDataRef = useRef<ExcalidrawData>();
+
+  const { toast } = useToast();
 
   // save excalidraw data to currentExcalidrawDataRef
   const onExcalidrawChange = debounce(
@@ -60,6 +63,13 @@ const Editor: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
   };
   // save excalidraw data to page
   const onClickClose = () => {
+    const { id, dismiss } = toast({
+      variant: "destructive",
+      title: "Saving...",
+      description:
+        "When contains a lot of elements or images, it may take a while.",
+      duration: 0,
+    });
     setTimeout(async () => {
       if (currentExcalidrawDataRef.current && blockUUIDRef.current) {
         console.log("[faiz:] === start save");
@@ -72,6 +82,7 @@ const Editor: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
         });
         await logseq.Editor.updateBlock(blockUUIDRef.current, blockData);
         console.log("[faiz:] === end save");
+        dismiss();
         logseq.hideMainUI();
       }
     }, INTERVAL + 100);

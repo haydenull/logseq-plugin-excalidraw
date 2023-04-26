@@ -1,8 +1,8 @@
 import {
   DEFAULT_EXCALIDRAW_LIBRARY_ITEMS,
   EXCALIDRAW_FILE_PROMPT,
-} from "@/helper/constants";
-import { genBlockData, getExcalidrawData } from "@/helper/util";
+} from "@/lib/constants";
+import { genBlockData, getExcalidrawData } from "@/lib/utils";
 import { LibraryItems } from "@excalidraw/excalidraw/types/types";
 
 const PAGE_NAME = "excalidraw-library-items-storage";

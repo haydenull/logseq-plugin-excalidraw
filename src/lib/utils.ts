@@ -1,14 +1,23 @@
+import { ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 import { pick } from "lodash";
 import type { ExcalidrawData } from "@/type";
 import type {
   BlockEntity,
   PageIdentity,
 } from "@logseq/libs/dist/LSPlugin.user";
-import { APP_STATE_PROPERTIES, DEFAULT_EXCALIDRAW_DATA } from "./constants";
+import {
+  APP_STATE_PROPERTIES,
+  DEFAULT_EXCALIDRAW_DATA,
+} from "../lib/constants";
 import type {
   AppState,
   LibraryItems,
 } from "@excalidraw/excalidraw/types/types";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 /**
  * get excalidraw data

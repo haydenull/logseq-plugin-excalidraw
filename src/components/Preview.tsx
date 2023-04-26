@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { getExcalidrawInfoFromPage } from "../helper/util";
+import { getExcalidrawInfoFromPage } from "@/lib/utils";
 import { exportToSvg } from "@excalidraw/excalidraw";
 import { TbZoomInFilled, TbZoomOutFilled } from "react-icons/tb";
 import { AiFillCloseCircle } from "react-icons/ai";
