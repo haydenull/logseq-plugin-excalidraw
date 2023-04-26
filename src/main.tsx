@@ -1,37 +1,51 @@
-import '@logseq/libs'
-import React from 'react'
-import ReactDOM from 'react-dom'
-import App from './App'
-import './index.css'
+import "@logseq/libs";
+import React from "react";
+import ReactDOM from "react-dom";
+import EditorApp from "@/app/Editor";
+import PreviewApp from "@/app/Preview";
+import bootModels from "@/bootstrap/model";
+import bootRenderBlockImage from "@/bootstrap/renderBlockImage";
+import bootCommand from "@/bootstrap/command";
+import bootExcalidrawLibraryItems from "./bootstrap/excalidrawLibraryItems";
+import "./index.css";
 
-const isDevelopment = import.meta.env.DEV
+console.log("=== logseq-plugin-excalidraw loaded ===");
+logseq.ready(() => {
+  logseq.on("ui:visible:changed", (e) => {
+    if (!e.visible) {
+      ReactDOM.unmountComponentAtNode(
+        document.getElementById("root") as Element
+      );
+    }
+  });
 
-if (isDevelopment) {
-  renderApp('browser')
-} else {
-  console.log('=== logseq-plugin-react-boilerplate loaded ===')
-  logseq.ready(() => {
+  bootModels(renderApp);
 
-    logseq.provideModel({
-      show() {
-        renderApp('logseq')
-        logseq.showMainUI()
-      },
-    })
+  // toolbar item
+  // logseq.App.registerUIItem("toolbar", {
+  //   key: "logseq-plugin-excalidraw",
+  //   template:
+  //     '<a data-on-click="show" class="button"><i class="ti ti-window"></i></a>',
+  // });
 
-    logseq.App.registerUIItem('toolbar', {
-      key: 'logseq-plugin-react-boilerplate',
-      template: '<a data-on-click="show" class="button"><i class="ti ti-window"></i></a>',
-    })
+  // render excalidraw block svg
+  bootRenderBlockImage();
 
-  })
-}
+  // initialize excalidraw library items
+  bootExcalidrawLibraryItems();
 
-function renderApp(env: string) {
+  bootCommand();
+});
+
+export type Mode = "edit" | "preview";
+export type RenderAppProps = { mode: Mode; pageName: string };
+function renderApp({ mode, pageName }: RenderAppProps) {
+  const AppMaps: Record<Mode, React.ReactElement> = {
+    preview: <PreviewApp pageName={pageName} />,
+    edit: <EditorApp pageName={pageName} />,
+  };
   ReactDOM.render(
-    <React.StrictMode>
-      <App env={env} />
-    </React.StrictMode>,
-    document.getElementById('root')
-  )
+    <React.StrictMode>{AppMaps[mode]}</React.StrictMode>,
+    document.getElementById("root")
+  );
 }
