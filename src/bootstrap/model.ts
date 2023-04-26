@@ -31,6 +31,11 @@ const bootModels = (renderApp: (props: RenderAppProps) => void) => {
       const uuid = e.dataset.blockId;
       logseq.Editor.removeBlock(uuid);
     },
+    async navPage(e) {
+      const pageName = e.dataset.pageName;
+      if (!pageName) return logseq.UI.showMsg("pageName is required");
+      logseq.App.pushState("page", { name: pageName });
+    },
   });
 };
 

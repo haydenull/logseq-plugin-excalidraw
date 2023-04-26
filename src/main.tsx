@@ -7,6 +7,7 @@ import PreviewApp from "@/app/Preview";
 import bootModels from "@/bootstrap/model";
 import bootRenderBlockImage from "@/bootstrap/renderBlockImage";
 import bootCommand from "@/bootstrap/command";
+import bootExcalidrawLibraryItems from "./bootstrap/excalidrawLibraryItems";
 
 console.log("=== logseq-plugin-excalidraw loaded ===");
 logseq.ready(() => {
@@ -29,6 +30,9 @@ logseq.ready(() => {
 
   // render excalidraw block svg
   bootRenderBlockImage();
+
+  // initialize excalidraw library items
+  bootExcalidrawLibraryItems();
 
   bootCommand();
 });

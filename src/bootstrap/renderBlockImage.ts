@@ -86,19 +86,22 @@ const bootRenderBlockImage = () => {
           slot,
           reset: true,
           template: `<div id="${id}" class="excalidraw-container">
-            <div class="excalidraw-toolbar">
-              <a data-on-click="delete" data-page-name="${page?.originalName}" data-block-id="${uuid}">
-                <i class="ti ti-trash"></i>
-              </a>
-              <a data-on-click="refresh" data-page-name="${page?.originalName}" data-container-id="${id}">
-                <i class="ti ti-refresh"></i>
-              </a>
-              <a data-on-click="edit" data-page-name="${page?.originalName}">
-                <i class="ti ti-edit"></i>
-              </a>
-              <a data-on-click="fullscreen" data-page-name="${page?.originalName}">
-                <i class="ti ti-maximize"></i>
-              </a>
+            <div class="excalidraw-toolbar-container">
+              <a data-on-click="navPage" class="excalidraw-title" data-page-name="${page?.originalName}">${page?.originalName}</a>
+              <div class="excalidraw-toolbar">
+                <a data-on-click="delete" data-page-name="${page?.originalName}" data-block-id="${uuid}">
+                  <i class="ti ti-trash"></i>
+                </a>
+                <a data-on-click="refresh" data-page-name="${page?.originalName}" data-container-id="${id}">
+                  <i class="ti ti-refresh"></i>
+                </a>
+                <a data-on-click="edit" data-page-name="${page?.originalName}">
+                  <i class="ti ti-edit"></i>
+                </a>
+                <a data-on-click="fullscreen" data-page-name="${page?.originalName}">
+                  <i class="ti ti-maximize"></i>
+                </a>
+                </div>
             </div>
           </div>`,
         });
@@ -120,21 +123,29 @@ const bootRenderBlockImage = () => {
     position: relative;
     line-height: 0;
   }
-  .excalidraw-container:hover .excalidraw-toolbar {
-    visibility: visible;
+  .excalidraw-container:hover .excalidraw-toolbar-container {
+    opacity: 1;
+  }
+  .excalidraw-toolbar-container {
+    display: flex;
+    justify-content: space-between;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 10px 6px;
+    background-image: linear-gradient(var(--ls-primary-background-color),transparent);
+  }
+  .excalidraw-title {
+    line-height: 16px;
   }
   .excalidraw-toolbar {
     display: flex;
     justify-content: flex-end;
-    visibility: hidden;
-    transition: visibility 0.2s ease-in-out;
     gap: 10px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    padding: 6px 4px;
-    background: rgba(0, 0, 0, 0.5);
   }
   .excalidraw-toolbar a {
     width: 18px;

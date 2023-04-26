@@ -12,14 +12,24 @@ import {
   getExcalidrawInfoFromPage,
   getMinimalAppState,
 } from "@/helper/util";
-import { ExcalidrawData } from "@/type";
+import type { ExcalidrawData } from "@/type";
+import type { LibraryItems } from "@excalidraw/excalidraw/types/types";
+import {
+  getExcalidrawLibraryItems,
+  updateExcalidrawLibraryItems,
+} from "@/bootstrap/excalidrawLibraryItems";
+
+type Theme = "light" | "dark";
 
 const Editor: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
   pageName,
 }) => {
   const [excalidrawData, setExcalidrawData] = useState<ExcalidrawData>();
+  const [libraryItems, setLibraryItems] = useState<LibraryItems>();
+  const [theme, setTheme] = useState<Theme>();
   const blockUUIDRef = useRef<string>();
 
+  // save excalidraw data to page
   const onExcalidrawChange = debounce((excalidrawElements, appState, files) => {
     const blockData = genBlockData({
       ...excalidrawData,
@@ -30,26 +40,47 @@ const Editor: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
     if (blockUUIDRef.current)
       logseq.Editor.updateBlock(blockUUIDRef.current, blockData);
   }, 1000);
+  // save library items to page
+  const onLibraryChange = (items: LibraryItems) => {
+    updateExcalidrawLibraryItems(items);
+  };
 
+  // initialize excalidraw data
   useEffect(() => {
     getExcalidrawInfoFromPage(pageName).then((data) => {
       setExcalidrawData(data?.excalidrawData);
       blockUUIDRef.current = data?.block?.uuid;
     });
   }, [pageName]);
+  // initialize library items
+  useEffect(() => {
+    getExcalidrawLibraryItems().then((items) => {
+      setLibraryItems(items || []);
+    });
+  }, []);
+  // initialize theme
+  useEffect(() => {
+    logseq.App.getStateFromStore<Theme>("ui/theme").then(setTheme);
+  }, []);
+
   return (
     <div className="w-screen h-screen">
-      {excalidrawData && (
+      {excalidrawData && libraryItems && (
         <Excalidraw
           initialData={{
-            elements: excalidrawData?.elements || [],
-            appState: excalidrawData?.appState
-              ? getMinimalAppState(excalidrawData.appState)
-              : {},
+            elements: excalidrawData.elements || [],
+            appState: excalidrawData.appState
+              ? Object.assign(
+                  { theme },
+                  getMinimalAppState(excalidrawData.appState)
+                )
+              : { theme },
             files: excalidrawData?.files || undefined,
+            libraryItems,
             scrollToContent: true,
           }}
           onChange={onExcalidrawChange}
+          onLibraryChange={onLibraryChange}
           renderTopRightUI={() => (
             <Button
               onSelect={() => logseq.hideMainUI()}

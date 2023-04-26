@@ -5,6 +5,7 @@ export const DEFAULT_EXCALIDRAW_DATA: ExcalidrawData = {
   elements: [],
   files: null,
 };
+export const DEFAULT_EXCALIDRAW_LIBRARY_ITEMS = [];
 
 /**
  * Prompt: do not manually edit this file

@@ -14,9 +14,7 @@ const bootCommand = () => {
       try {
         const page = await logseq.Editor.createPage(
           fileName,
-          {
-            "excalidraw-plugin": "true",
-          },
+          { "excalidraw-plugin": "true" },
           { format: "markdown", redirect: false }
         );
         await logseq.Editor.appendBlockInPage(

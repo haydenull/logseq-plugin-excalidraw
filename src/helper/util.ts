@@ -5,13 +5,18 @@ import type {
   PageIdentity,
 } from "@logseq/libs/dist/LSPlugin.user";
 import { APP_STATE_PROPERTIES, DEFAULT_EXCALIDRAW_DATA } from "./constants";
-import type { AppState } from "@excalidraw/excalidraw/types/types";
+import type {
+  AppState,
+  LibraryItems,
+} from "@excalidraw/excalidraw/types/types";
 
 /**
  * get excalidraw data
  * ```json\n{xxx}\n``` --> {xxx}
  */
-export const getExcalidrawData = (text?: string): ExcalidrawData | null => {
+export const getExcalidrawData = (
+  text?: string
+): ExcalidrawData | LibraryItems | null => {
   const match = text?.match(/```json\n(.*)\n```/s);
   return match ? JSON.parse(match[1]) : null;
 };
@@ -19,7 +24,9 @@ export const getExcalidrawData = (text?: string): ExcalidrawData | null => {
  * gen block data
  * {xxx} --> ```json\n{xxx}\n```
  */
-export const genBlockData = (excalidrawData: Record<string, unknown>) => {
+export const genBlockData = (
+  excalidrawData: Record<string, unknown> | LibraryItems
+) => {
   return `\`\`\`json\n${JSON.stringify(excalidrawData)}\n\`\`\``;
 };
 
@@ -33,7 +40,9 @@ export const getExcalidrawInfoFromPage = async (
   const pageBlocks = await logseq.Editor.getPageBlocksTree(srcPage);
   console.log("[faiz:] === pageBlocks", pageBlocks);
   const codeBlock = pageBlocks?.[3];
-  const excalidrawData = getExcalidrawData(codeBlock?.content);
+  const excalidrawData = getExcalidrawData(
+    codeBlock?.content
+  ) as ExcalidrawData;
   return {
     excalidrawData: excalidrawData || DEFAULT_EXCALIDRAW_DATA,
     block: codeBlock,
@@ -41,7 +50,7 @@ export const getExcalidrawInfoFromPage = async (
 };
 
 /**
- * 监听 esc 按钮
+ * listen esc keyup event
  */
 export const listenEsc = (callback: () => void) => {
   document.addEventListener("keyup", (e) => {
