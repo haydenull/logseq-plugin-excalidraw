@@ -23,11 +23,11 @@ import {
 } from "@/bootstrap/excalidrawLibraryItems";
 
 type Theme = "light" | "dark";
-const INTERVAL = 300;
+const WAIT = 300;
 
-const Editor: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
-  pageName,
-}) => {
+const Editor: React.FC<
+  React.PropsWithChildren<{ pageName: string; onClose?: () => void }>
+> = ({ pageName, onClose }) => {
   const [excalidrawData, setExcalidrawData] = useState<ExcalidrawData>();
   const [libraryItems, setLibraryItems] = useState<LibraryItems>();
   const [theme, setTheme] = useState<Theme>();
@@ -47,15 +47,13 @@ const Editor: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
       // });
       // if (blockUUIDRef.current)
       //   logseq.Editor.updateBlock(blockUUIDRef.current, blockData);
-      console.log("[faiz:] === elements", elements);
-      console.log("[faiz:] === files", files);
       currentExcalidrawDataRef.current = {
         elements,
         appState,
         files,
       };
     },
-    INTERVAL
+    WAIT
   );
   // save library items to page
   const onLibraryChange = (items: LibraryItems) => {
@@ -83,9 +81,10 @@ const Editor: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
         await logseq.Editor.updateBlock(blockUUIDRef.current, blockData);
         console.log("[faiz:] === end save");
         dismiss();
+        onClose?.();
         logseq.hideMainUI();
       }
-    }, INTERVAL + 100);
+    }, WAIT + 100);
   };
 
   // initialize excalidraw data

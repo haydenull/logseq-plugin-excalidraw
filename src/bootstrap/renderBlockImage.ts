@@ -19,7 +19,7 @@ export const insertSVG = async (
     // remove svg if it exists
     const prevSvg = parent.document
       .getElementById(containerId)
-      ?.querySelector(".excalidraw-svg");
+      ?.querySelector?.(".excalidraw-svg");
     if (prevSvg) prevSvg.remove();
 
     // insert preview img
@@ -27,7 +27,7 @@ export const insertSVG = async (
     _svg.style.minWidth = "100px";
     _svg.style.height = "auto";
     _svg.classList.add("excalidraw-svg");
-    parent.document.getElementById(containerId)?.prepend(_svg);
+    parent.document.getElementById(containerId)?.prepend?.(_svg);
   }, 0);
 };
 
@@ -64,7 +64,6 @@ const bootRenderBlockImage = () => {
 
         // get excalidraw data
         const { excalidrawData } = await getExcalidrawInfoFromPage(pageName);
-        console.log("[faiz:] === excalidrawData", excalidrawData);
 
         const { elements, appState, files } = excalidrawData;
         const id = `excalidraw-${pageName}-${slot}`;
@@ -87,7 +86,7 @@ const bootRenderBlockImage = () => {
           reset: true,
           template: `<div id="${id}" class="excalidraw-container">
             <div class="excalidraw-toolbar-container">
-              <a data-on-click="navPage" class="excalidraw-title" data-page-name="${page?.originalName}">${page?.originalName}</a>
+              <a data-on-click="navPage" class="excalidraw-title" data-page-name="${page?.originalName}" title="${page?.originalName}">${page?.originalName}</a>
               <div class="excalidraw-toolbar">
                 <a data-on-click="delete" data-page-name="${page?.originalName}" data-block-id="${uuid}">
                   <i class="ti ti-trash"></i>
@@ -95,7 +94,7 @@ const bootRenderBlockImage = () => {
                 <a data-on-click="refresh" data-page-name="${page?.originalName}" data-container-id="${id}">
                   <i class="ti ti-refresh"></i>
                 </a>
-                <a data-on-click="edit" data-page-name="${page?.originalName}">
+                <a data-on-click="edit" data-page-name="${page?.originalName}" data-container-id="${id}">
                   <i class="ti ti-edit"></i>
                 </a>
                 <a data-on-click="fullscreen" data-page-name="${page?.originalName}">
@@ -141,6 +140,9 @@ const bootRenderBlockImage = () => {
   }
   .excalidraw-title {
     line-height: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .excalidraw-toolbar {
     display: flex;

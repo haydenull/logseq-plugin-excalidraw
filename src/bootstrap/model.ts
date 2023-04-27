@@ -6,8 +6,9 @@ const bootModels = (renderApp: (props: RenderAppProps) => void) => {
   logseq.provideModel({
     edit(e) {
       const pageName = e.dataset.pageName;
+      const containerId = e.dataset.containerId;
       if (!pageName) return logseq.UI.showMsg("pageName is required");
-      renderApp({ mode: "edit", pageName });
+      renderApp({ mode: "edit", pageName, renderSlotId: containerId });
       logseq.showMainUI();
     },
     fullscreen(e) {

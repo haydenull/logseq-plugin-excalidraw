@@ -38,11 +38,15 @@ logseq.ready(() => {
 });
 
 export type Mode = "edit" | "preview";
-export type RenderAppProps = { mode: Mode; pageName: string };
-function renderApp({ mode, pageName }: RenderAppProps) {
+export type RenderAppProps = {
+  mode: Mode;
+  pageName: string;
+  renderSlotId?: string;
+};
+function renderApp({ mode, pageName, renderSlotId }: RenderAppProps) {
   const AppMaps: Record<Mode, React.ReactElement> = {
     preview: <PreviewApp pageName={pageName} />,
-    edit: <EditorApp pageName={pageName} />,
+    edit: <EditorApp pageName={pageName} renderSlotId={renderSlotId} />,
   };
   ReactDOM.render(
     <React.StrictMode>{AppMaps[mode]}</React.StrictMode>,
