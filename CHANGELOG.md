@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/haydenull/logseq-plugin-excalidraw/compare/v1.0.0...v1.1.0) (2023-04-27)
+
+
+### Features
+
+* :sparkles: automatically refresh the preview image after exiting editing ([9deeb4f](https://github.com/haydenull/logseq-plugin-excalidraw/commit/9deeb4fe7cb17e778ff80fb7a9c5fdc7e3e4c88a))
+
 # 1.0.0 (2023-04-26)
 
 
