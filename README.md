@@ -12,6 +12,7 @@
 - Create and edit Excalidraw drawings directly in Logseq
 - Import Excalidraw libraries for a more comprehensive drawing experience
 - Easy-to-use interface for a smooth and efficient workflow
+- Customizable font family
 
 ## Installation
 
@@ -21,8 +22,16 @@
 
 ## Usage
 
-Use `/` command, select "🎨 Excalidraw: Create New Draw".
+### Create a new drawing
+Use `/` command, select "🎨 Excalidraw: Create New Drawing".
 
+### Set font family
+Fill in the font file address in the plugin settings.
+
+- Online File: `https://example.com/your/path/font.woff2`
+- Local File:
+  - Mac: `file:///Users/foo/your/path/font.woff2`
+  - Windows: `file:///C:/Users/foo/your/path/font.woff2`
 
 ## Notes
 
@@ -46,7 +55,7 @@ Another point is that the plugin will remain synchronized with the official vers
 - [x] image preview
 - [x] full-screen operation
 - [x] support excalidraw library
-- [ ] customize font family
+- [x] customize font family
 - [ ] customize drawing name
 - [ ] drawing management dashboard
 

@@ -4,7 +4,7 @@ import type { SettingSchemaDesc } from "@logseq/libs/dist/LSPlugin";
 import { FONT_ID } from "@/lib/constants";
 
 export type ExcalidrawData = {
-  elements: ExcalidrawElement[];
+  elements: readonly ExcalidrawElement[];
   appState?: AppState;
   files: null | BinaryFiles;
 };
@@ -13,5 +13,5 @@ export type SettingItemSchema<TKey> = SettingSchemaDesc & {
   key: TKey;
 };
 
-export type PluginSettingsKeys = keyof typeof FONT_ID;
+export type PluginSettingsKeys = keyof typeof FONT_ID | "langCode";
 export type PluginSettings = Record<PluginSettingsKeys, string>;

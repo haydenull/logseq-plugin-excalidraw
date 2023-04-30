@@ -1,7 +1,12 @@
+import { type Language } from "@excalidraw/excalidraw/types/i18n";
 import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { pick } from "lodash";
-import type { ExcalidrawData } from "@/type";
+import type {
+  ExcalidrawData,
+  PluginSettingsKeys,
+  SettingItemSchema,
+} from "@/type";
 import type {
   BlockEntity,
   PageIdentity,
@@ -14,6 +19,7 @@ import type {
   AppState,
   LibraryItems,
 } from "@excalidraw/excalidraw/types/types";
+import getI18N, { DEFAULT_LANGUAGE, LANGUAGES } from "@/locales";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -81,3 +87,56 @@ export const createSVGElement = (svgString: string) => {
 export const getMinimalAppState = (appState: AppState) => {
   return pick(appState, APP_STATE_PROPERTIES);
 };
+
+/**
+ * get lang code from language setting
+ * en: English -> en
+ */
+export const getLangCode = (langSetting: string) =>
+  langSetting?.split(":")?.[0] || DEFAULT_LANGUAGE.code;
+
+/**
+ * join excalidraw lang to logseq setting
+ * This method must defined together with SETTINGS_SCHEMA, otherwise plugin will initialize error
+ */
+export const joinLangCode = (lang: Language) => `${lang.code}: ${lang.label}`;
+
+/**
+ * Logseq settings
+ */
+export const getSettingsSchema =
+  (): SettingItemSchema<PluginSettingsKeys>[] => {
+    const { settings: i18nSettings } = getI18N();
+    return [
+      {
+        key: "langCode",
+        title: i18nSettings.langCode.title,
+        type: "enum",
+        default: joinLangCode(DEFAULT_LANGUAGE),
+        description: i18nSettings.langCode.description,
+        enumPicker: "select",
+        enumChoices: LANGUAGES?.map(joinLangCode),
+      },
+      {
+        key: "Hand-drawn",
+        title: i18nSettings.HandDrawn.title,
+        type: "string",
+        default: "",
+        description: i18nSettings.HandDrawn.description,
+      },
+      {
+        key: "Normal",
+        title: i18nSettings.Normal.title,
+        type: "string",
+        default: "",
+        description: i18nSettings.Normal.description,
+      },
+      {
+        key: "Code",
+        title: i18nSettings.Code.title,
+        type: "string",
+        default: "",
+        description: i18nSettings.Code.description,
+      },
+    ];
+  };

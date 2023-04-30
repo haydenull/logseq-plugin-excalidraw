@@ -13,14 +13,16 @@ import { TbLogout, TbBrandGithub } from "react-icons/tb";
 import {
   genBlockData,
   getExcalidrawInfoFromPage,
+  getLangCode,
   getMinimalAppState,
 } from "@/lib/utils";
-import type { ExcalidrawData } from "@/type";
+import type { ExcalidrawData, PluginSettings } from "@/type";
 import type { LibraryItems } from "@excalidraw/excalidraw/types/types";
 import {
   getExcalidrawLibraryItems,
   updateExcalidrawLibraryItems,
 } from "@/bootstrap/excalidrawLibraryItems";
+import getI18N from "@/locales";
 
 type Theme = "light" | "dark";
 const WAIT = 300;
@@ -35,10 +37,15 @@ const Editor: React.FC<
   const currentExcalidrawDataRef = useRef<ExcalidrawData>();
 
   const { toast } = useToast();
+  const { editor: i18nEditor } = getI18N();
 
   // save excalidraw data to currentExcalidrawDataRef
   const onExcalidrawChange = debounce(
-    (elements: ExcalidrawElement[], appState: AppState, files: BinaryFiles) => {
+    (
+      elements: readonly ExcalidrawElement[],
+      appState: AppState,
+      files: BinaryFiles
+    ) => {
       // const blockData = genBlockData({
       //   ...excalidrawData,
       //   elements: excalidrawElements,
@@ -63,9 +70,8 @@ const Editor: React.FC<
   const onClickClose = () => {
     const { id, dismiss } = toast({
       variant: "destructive",
-      title: "Saving...",
-      description:
-        "When contains a lot of elements or images, it may take a while.",
+      title: i18nEditor.saveToast.title,
+      description: i18nEditor.saveToast.description,
       duration: 0,
     });
     setTimeout(async () => {
@@ -109,6 +115,9 @@ const Editor: React.FC<
     <div className="w-screen h-screen">
       {excalidrawData && libraryItems && (
         <Excalidraw
+          langCode={getLangCode(
+            (logseq.settings as unknown as PluginSettings)?.langCode
+          )}
           initialData={{
             elements: excalidrawData.elements || [],
             appState: excalidrawData.appState
@@ -127,7 +136,7 @@ const Editor: React.FC<
             <Button
               onSelect={onClickClose}
               style={{ width: "38px", height: "38px", color: "#666" }}
-              title="Exit"
+              title={i18nEditor.exitButton}
             >
               <TbLogout />
             </Button>

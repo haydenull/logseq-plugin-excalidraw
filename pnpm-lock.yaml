@@ -8,6 +8,7 @@ specifiers:
   '@semantic-release/exec': ^6.0.3
   '@semantic-release/git': ^10.0.1
   '@semantic-release/npm': ^8.0.3
+  '@types/lodash': ^4.14.194
   '@types/node': ^18.11.9
   '@types/react': ^18.0.25
   '@types/react-dom': ^18.0.9
@@ -52,6 +53,7 @@ devDependencies:
   '@semantic-release/exec': 6.0.3_semantic-release@21.0.1
   '@semantic-release/git': 10.0.1_semantic-release@21.0.1
   '@semantic-release/npm': 8.0.3_semantic-release@21.0.1
+  '@types/lodash': 4.14.194
   '@types/node': 18.16.0
   '@types/react': 18.0.38
   '@types/react-dom': 18.0.11
@@ -1077,6 +1079,10 @@ packages:
   /@tootallnate/once/2.0.0:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
     engines: {node: '>= 10'}
+    dev: true
+
+  /@types/lodash/4.14.194:
+    resolution: {integrity: sha512-r22s9tAS7imvBt2lyHC9B8AGwWnXaYb1tY09oyLkXDs4vArpYJzw09nj8MLx5VfciBPGIb+ZwG0ssYnEPJxn/g==}
     dev: true
 
   /@types/minimist/1.2.2:
