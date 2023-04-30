@@ -1,4 +1,5 @@
 import { FONT_ID } from "@/lib/constants";
+import { PluginSettings, PluginSettingsKeys } from "@/type";
 
 const rewriteFont = (
   fontFamily: string,
@@ -27,13 +28,10 @@ const rewriteFont = (
 };
 
 const rewriteAllFont = async () => {
-  // const { customFont = {} } = await getSettings();
-  const customFont = {
-    // "Hand-drawn": "./assets/chinese.woff2",
-    "Hand-drawn": "https://pocket.haydenhayden.com/font/chinese.woff2",
-  };
-  for (const [name, url] of Object.entries(customFont)) {
-    if (url) rewriteFont(FONT_ID[name as keyof typeof FONT_ID], url);
+  const settings = logseq.settings as unknown as PluginSettings;
+  for (const [name, url] of Object.entries(settings)) {
+    const _url = url?.trim?.();
+    if (Boolean(_url)) rewriteFont(FONT_ID[name as PluginSettingsKeys], _url);
   }
 };
 

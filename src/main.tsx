@@ -7,8 +7,9 @@ import bootModels from "@/bootstrap/model";
 import bootRenderBlockImage from "@/bootstrap/renderBlockImage";
 import bootCommand from "@/bootstrap/command";
 import bootExcalidrawLibraryItems from "./bootstrap/excalidrawLibraryItems";
-import "./index.css";
 import rewriteAllFont from "@/lib/rewriteFont";
+import { SETTINGS_SCHEMA } from "@/lib/constants";
+import "./index.css";
 
 console.log("=== logseq-plugin-excalidraw loaded ===");
 logseq.ready(() => {
@@ -37,6 +38,8 @@ logseq.ready(() => {
   bootExcalidrawLibraryItems();
 
   bootCommand();
+
+  logseq.useSettingsSchema(SETTINGS_SCHEMA);
 });
 
 export type Mode = "edit" | "preview";

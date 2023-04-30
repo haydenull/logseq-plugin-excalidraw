@@ -1,5 +1,10 @@
 import { type AppState } from "@excalidraw/excalidraw/types/types";
-import { type ExcalidrawData } from "@/type";
+import {
+  SettingItemSchema,
+  type ExcalidrawData,
+  PluginSettingsKeys,
+} from "@/type";
+import { type SettingSchemaDesc } from "@logseq/libs/dist/LSPlugin";
 
 export const FONT_ID = {
   "Hand-drawn": "Virgil",
@@ -71,4 +76,31 @@ export const NEW_FILE_EXCALIDRAW_DATA: ExcalidrawData = {
 export const APP_STATE_PROPERTIES: Array<keyof AppState> = [
   "gridSize",
   "viewBackgroundColor",
+];
+
+/**
+ * Logseq settings
+ */
+export const SETTINGS_SCHEMA: SettingItemSchema<PluginSettingsKeys>[] = [
+  {
+    key: "Hand-drawn",
+    title: "Hand-drawn Font Family",
+    type: "string",
+    default: "",
+    description: "Custom Hand-drawn font family, restart logseq to take effect",
+  },
+  {
+    key: "Normal",
+    title: "Normal Font Family",
+    type: "string",
+    default: "",
+    description: "Custom Normal font family, restart logseq to take effect",
+  },
+  {
+    key: "Code",
+    title: "Code Font Family",
+    type: "string",
+    default: "",
+    description: "Custom Code font family, restart logseq to take effect",
+  },
 ];
