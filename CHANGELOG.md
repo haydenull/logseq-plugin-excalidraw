@@ -1,3 +1,12 @@
+# [1.2.0](https://github.com/haydenull/logseq-plugin-excalidraw/compare/v1.1.0...v1.2.0) (2023-04-30)
+
+
+### Features
+
+* add custom font family settings ([3f54940](https://github.com/haydenull/logseq-plugin-excalidraw/commit/3f54940a2f50fd07fd39033de5a3fb08849c084b))
+* set customize font family ([4eba96d](https://github.com/haydenull/logseq-plugin-excalidraw/commit/4eba96da20313f46efb4181470777d7527710cc9))
+* support customize font family ([aa85a46](https://github.com/haydenull/logseq-plugin-excalidraw/commit/aa85a46849cd97a358dafd9daff23ab49c1cd4cf))
+
 # [1.1.0](https://github.com/haydenull/logseq-plugin-excalidraw/compare/v1.0.0...v1.1.0) (2023-04-27)
 
 
