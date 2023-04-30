@@ -29,6 +29,26 @@ Use `/` command, select "🎨 Excalidraw: Create New Draw".
 - Large files may cause freezing when saving, so it is recommended to save your work frequently and avoid working with excessively large files.
 - Deleting an Excalidraw drawing within Logseq will also delete the original file.
 
+## Why I made Excalidraw plugin
+The reason for developing this plugin is that the excalidraw build-in with logseq cannot meet my needs, such as preview and full-screen operation.
+
+I hope this plugin can help users easily showcase their ideas, so it needs to have the following features:
+
+- full-screen operation
+- support excalidraw library
+- customize drawing name (in development)
+- drawing management dashboard (in development)
+
+Another point is that the plugin will remain synchronized with the official version of Excalidraw.
+
+## Roadmap
+
+- [x] image preview
+- [x] full-screen operation
+- [x] support excalidraw library
+- [ ] customize drawing name
+- [ ] drawing management dashboard
+
 ## Contributing
 
 We welcome contributions to improve and expand the functionality of logseq-plugin-excalidraw. If you have any suggestions or would like to contribute, please feel free to open an issue or submit a pull request on our GitHub repository.
