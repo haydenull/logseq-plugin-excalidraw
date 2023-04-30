@@ -1,5 +1,6 @@
 import { NEW_FILE_EXCALIDRAW_DATA } from "@/lib/constants";
 import { getExcalidrawInfoFromPage } from "@/lib/utils";
+import getI18N from "@/locales";
 import { ExcalidrawData } from "@/type";
 import { exportToSvg } from "@excalidraw/excalidraw";
 
@@ -32,6 +33,7 @@ export const insertSVG = async (
 };
 
 const bootRenderBlockImage = () => {
+  const { preview: i18nPreview } = getI18N();
   // render: {{renderer excalidraw, excalidraw-2021-08-31-16-00-00}}
   logseq.App.onMacroRendererSlotted(
     async ({ slot, payload: { arguments: args, uuid } }) => {
@@ -88,16 +90,16 @@ const bootRenderBlockImage = () => {
             <div class="excalidraw-toolbar-container">
               <a data-on-click="navPage" class="excalidraw-title" data-page-name="${page?.originalName}" title="${page?.originalName}">${page?.originalName}</a>
               <div class="excalidraw-toolbar">
-                <a data-on-click="delete" data-page-name="${page?.originalName}" data-block-id="${uuid}">
+                <a data-on-click="delete" data-page-name="${page?.originalName}" data-block-id="${uuid}" title="${i18nPreview.deleteButton}">
                   <i class="ti ti-trash"></i>
                 </a>
-                <a data-on-click="refresh" data-page-name="${page?.originalName}" data-container-id="${id}">
+                <a data-on-click="refresh" data-page-name="${page?.originalName}" data-container-id="${id}" title="${i18nPreview.refreshButton}">
                   <i class="ti ti-refresh"></i>
                 </a>
-                <a data-on-click="edit" data-page-name="${page?.originalName}" data-container-id="${id}">
+                <a data-on-click="edit" data-page-name="${page?.originalName}" data-container-id="${id}" title="${i18nPreview.editButton}">
                   <i class="ti ti-edit"></i>
                 </a>
-                <a data-on-click="fullscreen" data-page-name="${page?.originalName}">
+                <a data-on-click="fullscreen" data-page-name="${page?.originalName}" title="${i18nPreview.fullScreenButton}">
                   <i class="ti ti-maximize"></i>
                 </a>
                 </div>

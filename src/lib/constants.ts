@@ -1,6 +1,12 @@
 import { type AppState } from "@excalidraw/excalidraw/types/types";
 import { type ExcalidrawData } from "@/type";
 
+export const FONT_ID = {
+  "Hand-drawn": "Virgil",
+  Normal: "Cascadia",
+  Code: "Assistant",
+} as const;
+
 export const DEFAULT_EXCALIDRAW_DATA: ExcalidrawData = {
   elements: [],
   files: null,

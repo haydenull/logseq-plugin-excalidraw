@@ -3,12 +3,14 @@ import {
   EXCALIDRAW_FILE_PROMPT,
 } from "@/lib/constants";
 import { genBlockData } from "@/lib/utils";
+import getI18N from "@/locales";
 import dayjs from "dayjs";
 
 const bootCommand = () => {
+  const { createDrawing: i18nCreateDrawing } = getI18N();
   // slash command: create excalidraw
   logseq.Editor.registerSlashCommand(
-    "🎨 Excalidraw: Create New Draw",
+    i18nCreateDrawing.tag,
     async ({ uuid }) => {
       const fileName = "excalidraw-" + dayjs().format("YYYY-MM-DD-HH-mm-ss");
       try {
@@ -31,7 +33,7 @@ const bootCommand = () => {
         );
         logseq.Editor.updateBlock(uuid, `{{renderer excalidraw, ${fileName}}}`);
       } catch (error) {
-        logseq.UI.showMsg("Create excalidraw error", "error");
+        logseq.UI.showMsg(i18nCreateDrawing.errorMsg, "error");
         console.error("[faiz:] === create excalidraw error", error);
       }
     }

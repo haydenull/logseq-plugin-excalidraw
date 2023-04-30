@@ -6,7 +6,10 @@ import PreviewApp from "@/app/Preview";
 import bootModels from "@/bootstrap/model";
 import bootRenderBlockImage from "@/bootstrap/renderBlockImage";
 import bootCommand from "@/bootstrap/command";
-import bootExcalidrawLibraryItems from "./bootstrap/excalidrawLibraryItems";
+import bootExcalidrawLibraryItems from "@/bootstrap/excalidrawLibraryItems";
+import rewriteAllFont from "@/lib/rewriteFont";
+import { getSettingsSchema } from "@/lib/utils";
+
 import "./index.css";
 
 console.log("=== logseq-plugin-excalidraw loaded ===");
@@ -35,6 +38,11 @@ logseq.ready(() => {
   bootExcalidrawLibraryItems();
 
   bootCommand();
+
+  const settingsSchema = getSettingsSchema();
+  logseq.useSettingsSchema(settingsSchema);
+
+  rewriteAllFont();
 });
 
 export type Mode = "edit" | "preview";
