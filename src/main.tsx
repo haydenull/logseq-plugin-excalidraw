@@ -8,9 +8,11 @@ import bootRenderBlockImage from "@/bootstrap/renderBlockImage";
 import bootCommand from "@/bootstrap/command";
 import bootExcalidrawLibraryItems from "./bootstrap/excalidrawLibraryItems";
 import "./index.css";
+import rewriteAllFont from "@/lib/rewriteFont";
 
 console.log("=== logseq-plugin-excalidraw loaded ===");
 logseq.ready(() => {
+  rewriteAllFont();
   logseq.on("ui:visible:changed", (e) => {
     if (!e.visible) {
       ReactDOM.unmountComponentAtNode(
