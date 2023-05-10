@@ -140,3 +140,10 @@ export const getSettingsSchema =
       },
     ];
   };
+
+/**
+ * get excalidraw pages
+ */
+export const getExcalidrawPages = async () => {
+  return logseq.DB.q(`(page-property :excalidraw-plugin "true")`);
+};

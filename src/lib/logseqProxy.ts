@@ -1,5 +1,4 @@
 const fetchLogseqApi = async (method: string, args?: any[]) => {
-  console.warn("=== Proxy call to logseq: ", method);
   const res = await fetch(`${import.meta.env.VITE_LOGSEQ_API_SERVER}/api`, {
     method: "POST",
     headers: {
@@ -31,7 +30,9 @@ const proxyLogseqMethodsObject = (
     {
       get(target, propKey) {
         return async (...args: any[]) => {
-          return fetchLogseqApi(`logseq.${key}.${propKey.toString()}`, args);
+          const method = `logseq.${key}.${propKey.toString()}`;
+          console.warn("=== Proxy call to logseq: ", method);
+          return fetchLogseqApi(method, args);
         };
       },
     }
@@ -45,4 +46,5 @@ export const proxyLogseq = () => {
   // @ts-ignore
   window.logseq = {};
   LOGSEQ_METHODS_OBJECT.forEach(proxyLogseqMethodsObject);
+  window.logseq.hideMainUI = () => alert("Proxy call to logseq.hideMainUI()");
 };

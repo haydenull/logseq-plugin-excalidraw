@@ -1,6 +1,6 @@
 import "@logseq/libs";
 import React from "react";
-import ReactDOM from "react-dom";
+import { type Root, createRoot } from "react-dom/client";
 import EditorApp from "@/app/Editor";
 import PreviewApp from "@/app/Preview";
 import DashboardApp from "./app/Dashboard";
@@ -15,6 +15,7 @@ import { proxyLogseq } from "@/lib/logseqProxy";
 import "./index.css";
 
 const isDevelopment = import.meta.env.DEV;
+let reactAppRoot: Root | null = null;
 
 console.log("=== logseq-plugin-excalidraw loaded ===");
 
@@ -22,21 +23,25 @@ if (isDevelopment) {
   // run in browser
   proxyLogseq();
 
+  // @ts-ignore
+  renderApp({ mode: "dashboard" });
+
   // bootModels(renderApp);
   // toolbar item
-  logseq.App.registerUIItem("toolbar", {
-    key: "logseq-plugin-excalidraw",
-    template:
-      '<a data-on-click="showDashboard" class="button"><i class="ti ti-window"></i></a>',
-  });
+  // logseq.App.registerUIItem("toolbar", {
+  //   key: "logseq-plugin-excalidraw",
+  //   template:
+  //     '<a data-on-click="showDashboard" class="button"><i class="ti ti-window"></i></a>',
+  // });
 } else {
   // run in logseq
   logseq.ready(() => {
     logseq.on("ui:visible:changed", (e) => {
       if (!e.visible) {
-        ReactDOM.unmountComponentAtNode(
-          document.getElementById("root") as Element
-        );
+        // ReactDOM.unmountComponentAtNode(
+        //   document.getElementById("root") as Element
+        // );
+        reactAppRoot?.unmount?.();
       }
     });
 
@@ -76,8 +81,11 @@ function renderApp({ mode, pageName, renderSlotId }: RenderAppProps) {
     edit: <EditorApp pageName={pageName} renderSlotId={renderSlotId} />,
     dashboard: <DashboardApp />,
   };
-  ReactDOM.render(
-    <React.StrictMode>{AppMaps[mode]}</React.StrictMode>,
-    document.getElementById("root")
-  );
+  // ReactDOM.render(
+  //   <React.StrictMode>{AppMaps[mode]}</React.StrictMode>,
+  //   document.getElementById("root")
+  // );
+  const container = document.getElementById("root");
+  reactAppRoot = createRoot(container!);
+  reactAppRoot.render(<React.StrictMode>{AppMaps[mode]}</React.StrictMode>);
 }
