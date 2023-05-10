@@ -9,7 +9,7 @@ import {
 import type { ExcalidrawElement } from "@excalidraw/excalidraw/types/element/types";
 import type { AppState, BinaryFiles } from "@excalidraw/excalidraw/types/types";
 import { debounce } from "lodash";
-import { TbLogout, TbBrandGithub } from "react-icons/tb";
+import { TbLogout, TbBrandGithub, TbArrowsMinimize } from "react-icons/tb";
 import {
   genBlockData,
   getExcalidrawInfoFromPage,
@@ -23,13 +23,23 @@ import {
   updateExcalidrawLibraryItems,
 } from "@/bootstrap/excalidrawLibraryItems";
 import getI18N from "@/locales";
+import { Input } from "@/components/ui/input";
+import TagSelector from "./TagSelector";
 
 type Theme = "light" | "dark";
+export enum EditorTypeEnum {
+  App = "app",
+  Page = "page",
+}
 const WAIT = 300;
 
 const Editor: React.FC<
-  React.PropsWithChildren<{ pageName: string; onClose?: () => void }>
-> = ({ pageName, onClose }) => {
+  React.PropsWithChildren<{
+    pageName: string;
+    onClose?: () => void;
+    type?: EditorTypeEnum;
+  }>
+> = ({ pageName, onClose, type = EditorTypeEnum.App }) => {
   const [excalidrawData, setExcalidrawData] = useState<ExcalidrawData>();
   const [libraryItems, setLibraryItems] = useState<LibraryItems>();
   const [theme, setTheme] = useState<Theme>();
@@ -67,7 +77,7 @@ const Editor: React.FC<
     updateExcalidrawLibraryItems(items);
   };
   // save excalidraw data to page
-  const onClickClose = () => {
+  const onClickClose = (type?: EditorTypeEnum) => {
     const { id, dismiss } = toast({
       variant: "destructive",
       title: i18nEditor.saveToast.title,
@@ -133,13 +143,21 @@ const Editor: React.FC<
           onChange={onExcalidrawChange}
           onLibraryChange={onLibraryChange}
           renderTopRightUI={() => (
-            <Button
-              onSelect={onClickClose}
-              style={{ width: "38px", height: "38px", color: "#666" }}
-              title={i18nEditor.exitButton}
-            >
-              <TbLogout />
-            </Button>
+            <>
+              <Input />
+              <TagSelector />
+              <Button
+                onSelect={() => onClickClose(type)}
+                style={{ width: "38px", height: "38px", color: "#666" }}
+                title={i18nEditor.exitButton}
+              >
+                {type === EditorTypeEnum.App ? (
+                  <TbLogout />
+                ) : (
+                  <TbArrowsMinimize />
+                )}
+              </Button>
+            </>
           )}
         >
           <MainMenu>
@@ -153,6 +171,8 @@ const Editor: React.FC<
             >
               Github
             </MainMenu.Item>
+            <MainMenu.DefaultItems.Export />
+            <MainMenu.DefaultItems.SaveAsImage />
             <MainMenu.DefaultItems.ClearCanvas />
             <MainMenu.DefaultItems.ToggleTheme />
             <MainMenu.DefaultItems.ChangeCanvasBackground />

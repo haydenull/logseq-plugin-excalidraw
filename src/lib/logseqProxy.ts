@@ -10,7 +10,8 @@ const fetchLogseqApi = async (method: string, args?: any[]) => {
       args,
     }),
   });
-  return res.json();
+  const data = await res.json();
+  return data;
 };
 
 const LOGSEQ_METHODS_OBJECT = [
@@ -32,7 +33,13 @@ const proxyLogseqMethodsObject = (
         return async (...args: any[]) => {
           const method = `logseq.${key}.${propKey.toString()}`;
           console.warn("=== Proxy call to logseq: ", method);
-          return fetchLogseqApi(method, args);
+          const data = await fetchLogseqApi(method, args);
+
+          if (data?.error) {
+            console.error(`=== Proxy ${method} error: `, data.error);
+          }
+
+          return data;
         };
       },
     }
@@ -47,4 +54,11 @@ export const proxyLogseq = () => {
   window.logseq = {};
   LOGSEQ_METHODS_OBJECT.forEach(proxyLogseqMethodsObject);
   window.logseq.hideMainUI = () => alert("Proxy call to logseq.hideMainUI()");
+  logseq.settings = {
+    langCode: "en: English",
+    "Hand-drawn": "https://pocket.haydenhayden.com/font/chinese.woff2",
+    Normal: "",
+    Code: "",
+    disabled: false,
+  };
 };
