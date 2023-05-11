@@ -14,33 +14,35 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useState } from "react";
+import { tagsAtom } from "@/model/tags";
+import { useAtom } from "jotai";
+import { Input } from "./ui/input";
+import { useToast } from "./ui/use-toast";
 
-const frameworks = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-];
-
-const TagSelector: React.FC<{}> = () => {
+const TagSelector: React.FC<{
+  value?: string;
+  onChange: (value: string) => void;
+}> = ({ value, onChange }) => {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
+  const [tags = [], setTags] = useAtom(tagsAtom);
+  const tagOptions = tags?.map((tag) => ({ value: tag, label: tag }));
+
+  const [newTag, setNewTag] = useState("");
+
+  const { toast } = useToast();
+
+  const onClickAddTag = () => {
+    if (!newTag) {
+      return toast({
+        variant: "destructive",
+        title: "Tag cannot be empty",
+      });
+    }
+    setTags([...tags, newTag]);
+    setNewTag("");
+    onChange(newTag);
+    setOpen(false);
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -52,7 +54,7 @@ const TagSelector: React.FC<{}> = () => {
           className="w-[200px] justify-between"
         >
           {value
-            ? frameworks.find((framework) => framework.value === value)?.label
+            ? tagOptions.find((framework) => framework.value === value)?.label
             : "Tag"}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -60,28 +62,35 @@ const TagSelector: React.FC<{}> = () => {
       <PopoverContent className="w-[200px] p-0">
         <Command>
           <CommandInput placeholder="Search tag..." />
-          <CommandEmpty>No framework found.</CommandEmpty>
+          <CommandEmpty>No tag found.</CommandEmpty>
           <CommandGroup>
-            {frameworks.map((framework) => (
+            {tagOptions.map((tag) => (
               <CommandItem
-                key={framework.value}
+                key={tag.value}
                 onSelect={(currentValue) => {
-                  setValue(currentValue === value ? "" : currentValue);
+                  onChange(currentValue);
                   setOpen(false);
                 }}
               >
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    value === framework.value ? "opacity-100" : "opacity-0"
+                    value === tag.value ? "opacity-100" : "opacity-0"
                   )}
                 />
-                {framework.label}
+                {tag.label}
               </CommandItem>
             ))}
           </CommandGroup>
         </Command>
-        <div>Add Tag</div>
+        <div className="border-t flex w-full max-w-sm items-center space-x-2 p-2">
+          <Input
+            placeholder="Add tag"
+            value={newTag}
+            onChange={(e) => setNewTag(e.target.value)}
+          />
+          <Button onClick={onClickAddTag}>Add</Button>
+        </div>
       </PopoverContent>
     </Popover>
   );

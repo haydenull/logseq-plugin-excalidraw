@@ -3,9 +3,13 @@ import Editor, { EditorTypeEnum } from "@/components/Editor";
 import { getExcalidrawInfoFromPage, getExcalidrawPages } from "@/lib/utils";
 import { insertSVG } from "@/bootstrap/renderBlockImage";
 import { useEffect, useState } from "react";
+import { useAtom } from "jotai";
 import { PageEntity } from "@logseq/libs/dist/LSPlugin.user";
 import { exportToSvg, THEME } from "@excalidraw/excalidraw";
 import SVGComponent from "@/components/SVGComponent";
+import { tagsAtom } from "@/model/tags";
+import { Input } from "@/components/ui/input";
+import TagSelector from "@/components/TagSelector";
 
 const PREVIEW_WINDOW = {
   width: 280,
@@ -24,6 +28,10 @@ const DashboardApp = () => {
   }>({
     show: false,
   });
+  const [tags] = useAtom(tagsAtom);
+  console.log("[faiz:] === tags", tags);
+  const [tag, setTag] = useState<string>();
+  const [filterInput, setFilterInput] = useState<string>("");
 
   useEffect(() => {
     getExcalidrawPages().then(async (pages) => {
@@ -61,6 +69,16 @@ const DashboardApp = () => {
     <>
       <div className="p-4">
         <h2>Dashboard</h2>
+        <div className="flex justify-center my-8">
+          <div className="flex gap-2 max-w-xl flex-1">
+            <Input
+              value={filterInput}
+              onChange={(e) => setFilterInput(e.target.value)}
+              placeholder="Enter drawing alias name"
+            />
+            <TagSelector value={tag} onChange={setTag} />
+          </div>
+        </div>
         <section
           className="grid gap-4"
           style={{

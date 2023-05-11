@@ -49,7 +49,10 @@ export const getExcalidrawInfoFromPage = async (
   srcPage: PageIdentity
 ): Promise<{
   excalidrawData: ExcalidrawData;
+  /** block that stores the excalidraw data */
   block: BlockEntity;
+  /** page blocks */
+  rawBlocks: BlockEntity[];
 }> => {
   console.log("[faiz:] === srcPage", srcPage);
   const pageBlocks = await logseq.Editor.getPageBlocksTree(srcPage);
@@ -61,6 +64,7 @@ export const getExcalidrawInfoFromPage = async (
   return {
     excalidrawData: excalidrawData || DEFAULT_EXCALIDRAW_DATA,
     block: codeBlock,
+    rawBlocks: pageBlocks,
   };
 };
 

@@ -26,14 +26,20 @@ import {
 import getI18N from "@/locales";
 import { Input } from "@/components/ui/input";
 import TagSelector from "./TagSelector";
+import { BlockIdentity } from "@logseq/libs/dist/LSPlugin";
 
 type Theme = "light" | "dark";
 export enum EditorTypeEnum {
   App = "app",
   Page = "page",
 }
-const WAIT = 300;
-const updatePageProperty = debounce(updateLogseqPageProperty, WAIT);
+const WAIT = 1000;
+const updatePageProperty = debounce(
+  (block: BlockIdentity, key: string, value: string) => {
+    logseq.Editor.upsertBlockProperty(block, key, value);
+  },
+  WAIT
+);
 
 const Editor: React.FC<
   React.PropsWithChildren<{
@@ -46,9 +52,11 @@ const Editor: React.FC<
   const [libraryItems, setLibraryItems] = useState<LibraryItems>();
   const [theme, setTheme] = useState<Theme>();
   const blockUUIDRef = useRef<string>();
+  const pagePropertyBlockUUIDRef = useRef<string>();
   const currentExcalidrawDataRef = useRef<ExcalidrawData>();
 
   const [aliasName, setAliasName] = useState<string>();
+  const [tag, setTag] = useState<string>();
 
   const { toast } = useToast();
   const { editor: i18nEditor } = getI18N();
@@ -109,9 +117,23 @@ const Editor: React.FC<
 
   const onAliasNameChange = (aliasName: string) => {
     setAliasName(aliasName);
-    updatePageProperty("645c2b96-6117-458a-84e6-6b55607f13f9", {
-      "excalidraw-plugin-alias": aliasName,
-    });
+    if (pagePropertyBlockUUIDRef.current) {
+      updatePageProperty(
+        pagePropertyBlockUUIDRef.current,
+        "excalidraw-plugin-alias",
+        aliasName
+      );
+    }
+  };
+  const onTagChange = (tag: string) => {
+    setTag(tag);
+    if (pagePropertyBlockUUIDRef.current) {
+      updatePageProperty(
+        pagePropertyBlockUUIDRef.current,
+        "excalidraw-plugin-tag",
+        tag
+      );
+    }
   };
 
   // initialize excalidraw data
@@ -119,6 +141,11 @@ const Editor: React.FC<
     getExcalidrawInfoFromPage(pageName).then((data) => {
       setExcalidrawData(data?.excalidrawData);
       blockUUIDRef.current = data?.block?.uuid;
+
+      const firstBlock = data?.rawBlocks?.[0];
+      pagePropertyBlockUUIDRef.current = firstBlock?.uuid;
+      setAliasName(firstBlock.properties?.excalidrawPluginAlias || "");
+      setTag(firstBlock.properties?.excalidrawPluginTag || "");
     });
   }, [pageName]);
   // initialize library items
@@ -160,7 +187,7 @@ const Editor: React.FC<
                 value={aliasName}
                 onChange={(e) => onAliasNameChange(e.target.value)}
               />
-              <TagSelector />
+              <TagSelector value={tag} onChange={onTagChange} />
               <Button
                 onSelect={() => onClickClose(type)}
                 style={{ width: "38px", height: "38px", color: "#666" }}
