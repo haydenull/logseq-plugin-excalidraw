@@ -15,6 +15,7 @@ import {
   getExcalidrawInfoFromPage,
   getLangCode,
   getMinimalAppState,
+  updateLogseqPageProperty,
 } from "@/lib/utils";
 import type { ExcalidrawData, PluginSettings } from "@/type";
 import type { LibraryItems } from "@excalidraw/excalidraw/types/types";
@@ -32,6 +33,7 @@ export enum EditorTypeEnum {
   Page = "page",
 }
 const WAIT = 300;
+const updatePageProperty = debounce(updateLogseqPageProperty, WAIT);
 
 const Editor: React.FC<
   React.PropsWithChildren<{
@@ -45,6 +47,8 @@ const Editor: React.FC<
   const [theme, setTheme] = useState<Theme>();
   const blockUUIDRef = useRef<string>();
   const currentExcalidrawDataRef = useRef<ExcalidrawData>();
+
+  const [aliasName, setAliasName] = useState<string>();
 
   const { toast } = useToast();
   const { editor: i18nEditor } = getI18N();
@@ -103,6 +107,13 @@ const Editor: React.FC<
     }, WAIT + 100);
   };
 
+  const onAliasNameChange = (aliasName: string) => {
+    setAliasName(aliasName);
+    updatePageProperty("645c2b96-6117-458a-84e6-6b55607f13f9", {
+      "excalidraw-plugin-alias": aliasName,
+    });
+  };
+
   // initialize excalidraw data
   useEffect(() => {
     getExcalidrawInfoFromPage(pageName).then((data) => {
@@ -144,7 +155,11 @@ const Editor: React.FC<
           onLibraryChange={onLibraryChange}
           renderTopRightUI={() => (
             <>
-              <Input />
+              <Input
+                placeholder="Untitled"
+                value={aliasName}
+                onChange={(e) => onAliasNameChange(e.target.value)}
+              />
               <TagSelector />
               <Button
                 onSelect={() => onClickClose(type)}

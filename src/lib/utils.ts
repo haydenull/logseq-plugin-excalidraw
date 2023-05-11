@@ -147,3 +147,16 @@ export const getSettingsSchema =
 export const getExcalidrawPages = async () => {
   return logseq.DB.q(`(page-property :excalidraw-plugin "true")`);
 };
+
+/**
+ * create or update logseq page property
+ */
+export const updateLogseqPageProperty = async (
+  pageName: string,
+  properties: Record<string, unknown>
+) => {
+  const upsertBlockPropertyPromises = Object.keys(properties).map((key) =>
+    logseq.Editor.upsertBlockProperty(pageName, key, properties?.[key])
+  );
+  return Promise.allSettled(upsertBlockPropertyPromises);
+};
