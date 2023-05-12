@@ -187,7 +187,7 @@ const Editor: React.FC<
                 value={aliasName}
                 onChange={(e) => onAliasNameChange(e.target.value)}
               />
-              <TagSelector value={tag} onChange={onTagChange} />
+              <TagSelector showAdd value={tag} onChange={onTagChange} />
               <Button
                 onSelect={() => onClickClose(type)}
                 style={{ width: "38px", height: "38px", color: "#666" }}

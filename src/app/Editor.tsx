@@ -1,12 +1,16 @@
+import { useAtom } from "jotai";
 import { Toaster } from "@/components/ui/toaster";
 import Editor from "@/components/Editor";
-import { getExcalidrawInfoFromPage } from "@/lib/utils";
+import { getExcalidrawInfoFromPage, getTags } from "@/lib/utils";
 import { insertSVG } from "@/bootstrap/renderBlockImage";
+import { useEffect } from "react";
+import { tagsAtom } from "@/model/tags";
 
 const EditorApp: React.FC<{ pageName: string; renderSlotId?: string }> = ({
   pageName,
   renderSlotId,
 }) => {
+  const [, setTags] = useAtom(tagsAtom);
   const onClose = async () => {
     // refresh render block image
     if (pageName && renderSlotId) {
@@ -14,6 +18,9 @@ const EditorApp: React.FC<{ pageName: string; renderSlotId?: string }> = ({
       insertSVG(renderSlotId, undefined, excalidrawData);
     }
   };
+  useEffect(() => {
+    getTags().then(setTags);
+  }, []);
   return (
     <>
       <div className="w-screen h-screen flex items-center justify-center overflow-auto">

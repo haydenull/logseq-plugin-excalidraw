@@ -1,11 +1,14 @@
 import { Toaster } from "@/components/ui/toaster";
 import Editor, { EditorTypeEnum } from "@/components/Editor";
-import { getExcalidrawInfoFromPage, getExcalidrawPages } from "@/lib/utils";
-import { insertSVG } from "@/bootstrap/renderBlockImage";
+import {
+  getExcalidrawInfoFromPage,
+  getExcalidrawPages,
+  getTags,
+} from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { PageEntity } from "@logseq/libs/dist/LSPlugin.user";
-import { exportToSvg, THEME } from "@excalidraw/excalidraw";
+import { exportToSvg } from "@excalidraw/excalidraw";
 import SVGComponent from "@/components/SVGComponent";
 import { tagsAtom } from "@/model/tags";
 import { Input } from "@/components/ui/input";
@@ -19,7 +22,13 @@ const TITLE_HEIGHT = 50;
 
 const DashboardApp = () => {
   const [allPages, setAllPages] = useState<
-    Array<PageEntity & { svg: SVGSVGElement }>
+    Array<
+      PageEntity & {
+        drawSvg: SVGSVGElement;
+        drawAlias?: string;
+        drawTag?: string;
+      }
+    >
   >([]);
   console.log("[faiz:] === allPages", allPages);
   const [editorInfo, setEditorInfo] = useState<{
@@ -28,16 +37,31 @@ const DashboardApp = () => {
   }>({
     show: false,
   });
-  const [tags] = useAtom(tagsAtom);
-  console.log("[faiz:] === tags", tags);
-  const [tag, setTag] = useState<string>();
+  const [, setTags] = useAtom(tagsAtom);
+  const [filterTag, setFilterTag] = useState<string>();
   const [filterInput, setFilterInput] = useState<string>("");
+
+  const pagesAfterFilter = allPages.filter((page) => {
+    const _filterInput = filterInput?.trim();
+    const _filterTag = filterTag?.trim();
+
+    // show all drawings if no filter
+    const hasFilterTag = _filterTag
+      ? page.drawTag?.toLowerCase().includes(_filterTag)
+      : true;
+    const hasFilterInput = _filterInput
+      ? page.drawAlias?.toLowerCase().includes(_filterInput)
+      : true;
+    return hasFilterTag && hasFilterInput;
+  });
 
   useEffect(() => {
     getExcalidrawPages().then(async (pages) => {
       if (!pages) return;
       const promises = pages.map(async (page) => {
-        const { excalidrawData } = await getExcalidrawInfoFromPage(page.name);
+        const { excalidrawData, rawBlocks } = await getExcalidrawInfoFromPage(
+          page.name
+        );
         const svg = await exportToSvg({
           elements: excalidrawData?.elements ?? [],
           appState: excalidrawData?.appState ?? {},
@@ -56,19 +80,27 @@ const DashboardApp = () => {
           svg.style.width = "auto";
           svg.style.height = PREVIEW_WINDOW.height + "px";
         }
+
+        const firstBlock = rawBlocks?.[0];
+        const drawAlias = firstBlock?.properties?.excalidrawPluginAlias;
+        const drawTag = firstBlock?.properties?.excalidrawPluginTag;
         return {
           ...page,
           drawSvg: svg,
+          drawAlias,
+          drawTag,
         };
       });
       setAllPages(await Promise.all(promises));
     });
   }, []);
+  useEffect(() => {
+    getTags().then(setTags);
+  }, []);
 
   return (
     <>
-      <div className="p-4">
-        <h2>Dashboard</h2>
+      <div className="py-5 px-10">
         <div className="flex justify-center my-8">
           <div className="flex gap-2 max-w-xl flex-1">
             <Input
@@ -76,7 +108,7 @@ const DashboardApp = () => {
               onChange={(e) => setFilterInput(e.target.value)}
               placeholder="Enter drawing alias name"
             />
-            <TagSelector value={tag} onChange={setTag} />
+            <TagSelector value={filterTag} onChange={setFilterTag} />
           </div>
         </div>
         <section
@@ -85,10 +117,10 @@ const DashboardApp = () => {
             gridTemplateColumns: `repeat(auto-fill,${PREVIEW_WINDOW.width}px)`,
           }}
         >
-          {allPages.map((page) => (
+          {pagesAfterFilter.map((page) => (
             <div
               key={page.id}
-              className="flex flex-col border rounded relative cursor-pointer"
+              className="flex flex-col border rounded relative cursor-pointer hover:shadow-lg"
               style={{ height: `${PREVIEW_WINDOW.height + TITLE_HEIGHT}px` }}
               onClick={() => {
                 setEditorInfo({

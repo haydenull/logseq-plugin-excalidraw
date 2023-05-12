@@ -9,6 +9,7 @@ import type {
 } from "@/type";
 import type {
   BlockEntity,
+  PageEntity,
   PageIdentity,
 } from "@logseq/libs/dist/LSPlugin.user";
 import {
@@ -163,4 +164,17 @@ export const updateLogseqPageProperty = async (
     logseq.Editor.upsertBlockProperty(pageName, key, properties?.[key])
   );
   return Promise.allSettled(upsertBlockPropertyPromises);
+};
+
+export const getTags = async (): Promise<string[]> => {
+  return getExcalidrawPages().then(async (pages) => {
+    console.log("[faiz:] === getTags pages", pages);
+    if (!pages) return [];
+    const promises = pages.map(async (page: PageEntity) => {
+      const blocks = await logseq.Editor.getPageBlocksTree(page.originalName);
+      return blocks?.[0]?.properties?.excalidrawPluginTag;
+    });
+    const tags = await Promise.all(promises);
+    return tags?.filter(Boolean);
+  });
 };

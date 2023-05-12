@@ -21,11 +21,15 @@ import { useToast } from "./ui/use-toast";
 
 const TagSelector: React.FC<{
   value?: string;
+  showAdd?: boolean;
   onChange: (value: string) => void;
-}> = ({ value, onChange }) => {
+}> = ({ value, onChange, showAdd = false }) => {
   const [open, setOpen] = useState(false);
   const [tags = [], setTags] = useAtom(tagsAtom);
-  const tagOptions = tags?.map((tag) => ({ value: tag, label: tag }));
+  const tagOptions = tags?.map((tag) => ({
+    value: tag?.toLocaleLowerCase(),
+    label: tag,
+  }));
 
   const [newTag, setNewTag] = useState("");
 
@@ -53,9 +57,11 @@ const TagSelector: React.FC<{
           aria-expanded={open}
           className="w-[200px] justify-between"
         >
-          {value
-            ? tagOptions.find((framework) => framework.value === value)?.label
-            : "Tag"}
+          {value ? (
+            tagOptions.find((framework) => framework.value === value)?.label
+          ) : (
+            <span className="text-slate-400">Select a tag</span>
+          )}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -68,7 +74,13 @@ const TagSelector: React.FC<{
               <CommandItem
                 key={tag.value}
                 onSelect={(currentValue) => {
-                  onChange(currentValue);
+                  console.log(
+                    "[faiz:] === currentValue",
+                    currentValue,
+                    tag.value,
+                    value
+                  );
+                  onChange(currentValue === value ? "" : currentValue);
                   setOpen(false);
                 }}
               >
@@ -83,14 +95,16 @@ const TagSelector: React.FC<{
             ))}
           </CommandGroup>
         </Command>
-        <div className="border-t flex w-full max-w-sm items-center space-x-2 p-2">
-          <Input
-            placeholder="Add tag"
-            value={newTag}
-            onChange={(e) => setNewTag(e.target.value)}
-          />
-          <Button onClick={onClickAddTag}>Add</Button>
-        </div>
+        {showAdd && (
+          <div className="border-t flex w-full max-w-sm items-center space-x-2 p-2">
+            <Input
+              placeholder="Add tag"
+              value={newTag}
+              onChange={(e) => setNewTag(e.target.value)}
+            />
+            <Button onClick={onClickAddTag}>Add</Button>
+          </div>
+        )}
       </PopoverContent>
     </Popover>
   );
