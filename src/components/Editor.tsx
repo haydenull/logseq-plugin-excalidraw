@@ -28,7 +28,7 @@ import { Input } from "@/components/ui/input";
 import TagSelector from "./TagSelector";
 import { BlockIdentity } from "@logseq/libs/dist/LSPlugin";
 
-type Theme = "light" | "dark";
+export type Theme = "light" | "dark";
 export enum EditorTypeEnum {
   App = "app",
   Page = "page",
@@ -145,7 +145,7 @@ const Editor: React.FC<
       const firstBlock = data?.rawBlocks?.[0];
       pagePropertyBlockUUIDRef.current = firstBlock?.uuid;
       setAliasName(firstBlock.properties?.excalidrawPluginAlias || "");
-      setTag(firstBlock.properties?.excalidrawPluginTag || "");
+      setTag(firstBlock.properties?.excalidrawPluginTag?.toLowerCase?.() || "");
     });
   }, [pageName]);
   // initialize library items

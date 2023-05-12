@@ -10,8 +10,10 @@ const fetchLogseqApi = async (method: string, args?: any[]) => {
       args,
     }),
   });
-  const data = await res.json();
-  return data;
+  if (res.headers.get("Content-Type")?.includes("application/json")) {
+    return await res.json();
+  }
+  return res.text();
 };
 
 const LOGSEQ_METHODS_OBJECT = [

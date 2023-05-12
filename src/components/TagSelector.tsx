@@ -1,4 +1,4 @@
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,16 +18,19 @@ import { tagsAtom } from "@/model/tags";
 import { useAtom } from "jotai";
 import { Input } from "./ui/input";
 import { useToast } from "./ui/use-toast";
+import { Separator } from "./ui/separator";
+import { Badge } from "./ui/badge";
 
 const TagSelector: React.FC<{
   value?: string;
   showAdd?: boolean;
   onChange: (value: string) => void;
-}> = ({ value, onChange, showAdd = false }) => {
+  asFilter?: boolean;
+}> = ({ value, onChange, showAdd = false, asFilter = false }) => {
   const [open, setOpen] = useState(false);
   const [tags = [], setTags] = useAtom(tagsAtom);
   const tagOptions = tags?.map((tag) => ({
-    value: tag?.toLocaleLowerCase(),
+    value: tag?.toLowerCase(),
     label: tag,
   }));
 
@@ -42,6 +45,12 @@ const TagSelector: React.FC<{
         title: "Tag cannot be empty",
       });
     }
+    if (tags?.map((tag) => tag.toLowerCase()).includes(newTag?.toLowerCase())) {
+      return toast({
+        variant: "destructive",
+        title: "Tag already exists",
+      });
+    }
     setTags([...tags, newTag]);
     setNewTag("");
     onChange(newTag);
@@ -51,19 +60,37 @@ const TagSelector: React.FC<{
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-[200px] justify-between"
-        >
-          {value ? (
-            tagOptions.find((framework) => framework.value === value)?.label
-          ) : (
-            <span className="text-slate-400">Select a tag</span>
-          )}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
+        {asFilter ? (
+          <Button variant="outline" className="border-dashed">
+            <PlusCircle className="mr-2 h-4 w-4" />
+            Tag
+            {value && (
+              <>
+                <Separator orientation="vertical" className="mx-2 h-6" />
+                <Badge
+                  variant="secondary"
+                  className="rounded-sm px-2 font-normal"
+                >
+                  {value}
+                </Badge>
+              </>
+            )}
+          </Button>
+        ) : (
+          <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className="w-[200px] justify-between"
+          >
+            {value ? (
+              tagOptions.find((framework) => framework.value === value)?.label
+            ) : (
+              <span className="text-slate-400 truncate">Select a tag</span>
+            )}
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        )}
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
@@ -74,12 +101,6 @@ const TagSelector: React.FC<{
               <CommandItem
                 key={tag.value}
                 onSelect={(currentValue) => {
-                  console.log(
-                    "[faiz:] === currentValue",
-                    currentValue,
-                    tag.value,
-                    value
-                  );
                   onChange(currentValue === value ? "" : currentValue);
                   setOpen(false);
                 }}
@@ -98,11 +119,14 @@ const TagSelector: React.FC<{
         {showAdd && (
           <div className="border-t flex w-full max-w-sm items-center space-x-2 p-2">
             <Input
+              className="h-8"
               placeholder="Add tag"
               value={newTag}
               onChange={(e) => setNewTag(e.target.value)}
             />
-            <Button onClick={onClickAddTag}>Add</Button>
+            <Button size="sm" className="h-8" onClick={onClickAddTag}>
+              Add
+            </Button>
           </div>
         )}
       </PopoverContent>

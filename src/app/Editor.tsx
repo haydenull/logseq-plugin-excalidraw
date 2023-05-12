@@ -1,7 +1,7 @@
 import { useAtom } from "jotai";
 import { Toaster } from "@/components/ui/toaster";
-import Editor from "@/components/Editor";
-import { getExcalidrawInfoFromPage, getTags } from "@/lib/utils";
+import Editor, { Theme } from "@/components/Editor";
+import { getExcalidrawInfoFromPage, getTags, setTheme } from "@/lib/utils";
 import { insertSVG } from "@/bootstrap/renderBlockImage";
 import { useEffect } from "react";
 import { tagsAtom } from "@/model/tags";
@@ -20,6 +20,10 @@ const EditorApp: React.FC<{ pageName: string; renderSlotId?: string }> = ({
   };
   useEffect(() => {
     getTags().then(setTags);
+  }, []);
+  // initialize theme
+  useEffect(() => {
+    logseq.App.getStateFromStore<Theme>("ui/theme").then(setTheme);
   }, []);
   return (
     <>

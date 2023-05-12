@@ -1,9 +1,11 @@
 import { Toaster } from "@/components/ui/toaster";
-import Editor, { EditorTypeEnum } from "@/components/Editor";
+import { X, MoreHorizontal, Trash2, Edit3, Tag, Image } from "lucide-react";
+import Editor, { EditorTypeEnum, Theme } from "@/components/Editor";
 import {
   getExcalidrawInfoFromPage,
   getExcalidrawPages,
   getTags,
+  setTheme,
 } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
@@ -13,6 +15,14 @@ import SVGComponent from "@/components/SVGComponent";
 import { tagsAtom } from "@/model/tags";
 import { Input } from "@/components/ui/input";
 import TagSelector from "@/components/TagSelector";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const PREVIEW_WINDOW = {
   width: 280,
@@ -54,6 +64,11 @@ const DashboardApp = () => {
       : true;
     return hasFilterTag && hasFilterInput;
   });
+
+  const onClickReset = () => {
+    setFilterInput("");
+    setFilterTag("");
+  };
 
   useEffect(() => {
     getExcalidrawPages().then(async (pages) => {
@@ -97,22 +112,32 @@ const DashboardApp = () => {
   useEffect(() => {
     getTags().then(setTags);
   }, []);
+  // initialize theme
+  useEffect(() => {
+    logseq.App.getStateFromStore<Theme>("ui/theme").then(setTheme);
+  }, []);
 
   return (
     <>
       <div className="py-5 px-10">
         <div className="flex justify-center my-8">
-          <div className="flex gap-2 max-w-xl flex-1">
+          <div className="flex gap-2 max-w-2xl flex-1 justify-between">
             <Input
               value={filterInput}
               onChange={(e) => setFilterInput(e.target.value)}
-              placeholder="Enter drawing alias name"
+              placeholder="Filter drawings..."
             />
-            <TagSelector value={filterTag} onChange={setFilterTag} />
+            <TagSelector asFilter value={filterTag} onChange={setFilterTag} />
+            {Boolean(filterTag) || Boolean(filterInput) ? (
+              <Button variant="ghost" onClick={onClickReset}>
+                Reset <X size="16" className="ml-2" />
+              </Button>
+            ) : null}
+            {/* <Button>Create</Button> */}
           </div>
         </div>
         <section
-          className="grid gap-4"
+          className="grid gap-4 justify-center"
           style={{
             gridTemplateColumns: `repeat(auto-fill,${PREVIEW_WINDOW.width}px)`,
           }}
@@ -120,7 +145,7 @@ const DashboardApp = () => {
           {pagesAfterFilter.map((page) => (
             <div
               key={page.id}
-              className="flex flex-col border rounded relative cursor-pointer hover:shadow-lg"
+              className="flex flex-col border rounded-md overflow-hidden relative cursor-pointer hover:shadow-xl dark:border-slate-600 dark:bg-slate-700 dark:hover:shadow-slate-800"
               style={{ height: `${PREVIEW_WINDOW.height + TITLE_HEIGHT}px` }}
               onClick={() => {
                 setEditorInfo({
@@ -130,16 +155,42 @@ const DashboardApp = () => {
               }}
             >
               <div
-                className="h-48 overflow-hidden flex justify-center items-center"
+                className="h-48 overflow-hidden flex justify-center items-center bg-white relative"
                 style={{ height: `${PREVIEW_WINDOW.height}px` }}
               >
                 {page.drawSvg && <SVGComponent svgElement={page.drawSvg} />}
+                <div className="w-full h-full absolute">
+                  <div className="bg-slate-400 h-7 flex justify-end items-center w-full px-2 opacity-50">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <MoreHorizontal size="16" />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuItem>
+                          <Edit3 className="mr-2 h-4 w-4" /> Rename
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Tag className="mr-2 h-4 w-4" /> Set Tag
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Image className="mr-2 h-4 w-4" /> Copy Renderer Text
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>
+                          <div className="text-rose-500 flex">
+                            <Trash2 className="mr-2 h-4 w-4" /> Delete
+                          </div>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
               </div>
               <div
-                className="truncate border-t px-2 flex items-center bg-stone-100"
+                className="truncate border-t px-2 flex items-center bg-stone-100 dark:bg-slate-800"
                 style={{ height: `${TITLE_HEIGHT}px` }}
               >
-                {page.name}
+                {page.drawAlias || page.name}
               </div>
             </div>
           ))}

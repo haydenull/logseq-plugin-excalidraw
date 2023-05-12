@@ -21,6 +21,7 @@ import type {
   LibraryItems,
 } from "@excalidraw/excalidraw/types/types";
 import getI18N, { DEFAULT_LANGUAGE, LANGUAGES } from "@/locales";
+import { Theme } from "@/components/Editor";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -177,4 +178,12 @@ export const getTags = async (): Promise<string[]> => {
     const tags = await Promise.all(promises);
     return tags?.filter(Boolean);
   });
+};
+
+export const setTheme = (theme: Theme = "light") => {
+  if (theme === "light") {
+    document.documentElement.classList.remove("dark");
+  } else {
+    document.documentElement.classList.add("dark");
+  }
 };

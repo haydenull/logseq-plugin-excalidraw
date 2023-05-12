@@ -4,6 +4,7 @@
 
 html, body {
   background-color: transparent;
+  @apply dark:bg-slate-900;
 }
 #root {
   @apply w-screen h-screen;
