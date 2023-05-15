@@ -1,5 +1,5 @@
 import { Toaster } from "@/components/ui/toaster";
-import { X, MoreHorizontal, Trash2, Edit3, Tag, Image } from "lucide-react";
+import { X } from "lucide-react";
 import Editor, { EditorTypeEnum, Theme } from "@/components/Editor";
 import {
   getExcalidrawInfoFromPage,
@@ -9,37 +9,18 @@ import {
 } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
-import { PageEntity } from "@logseq/libs/dist/LSPlugin.user";
 import { exportToSvg } from "@excalidraw/excalidraw";
-import SVGComponent from "@/components/SVGComponent";
 import { tagsAtom } from "@/model/tags";
 import { Input } from "@/components/ui/input";
 import TagSelector from "@/components/TagSelector";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-const PREVIEW_WINDOW = {
-  width: 280,
-  height: 180,
-};
-const TITLE_HEIGHT = 50;
+import DrawingCard, {
+  PREVIEW_WINDOW,
+  type IPageWithDrawing,
+} from "@/components/DrawingCard";
 
 const DashboardApp = () => {
-  const [allPages, setAllPages] = useState<
-    Array<
-      PageEntity & {
-        drawSvg: SVGSVGElement;
-        drawAlias?: string;
-        drawTag?: string;
-      }
-    >
-  >([]);
+  const [allPages, setAllPages] = useState<IPageWithDrawing[]>([]);
   console.log("[faiz:] === allPages", allPages);
   const [editorInfo, setEditorInfo] = useState<{
     show: boolean;
@@ -68,6 +49,12 @@ const DashboardApp = () => {
   const onClickReset = () => {
     setFilterInput("");
     setFilterTag("");
+  };
+  const onClickDrawing = (page: IPageWithDrawing) => {
+    setEditorInfo({
+      show: true,
+      pageName: page.originalName,
+    });
   };
 
   useEffect(() => {
@@ -143,56 +130,7 @@ const DashboardApp = () => {
           }}
         >
           {pagesAfterFilter.map((page) => (
-            <div
-              key={page.id}
-              className="flex flex-col border rounded-md overflow-hidden relative cursor-pointer hover:shadow-xl dark:border-slate-600 dark:bg-slate-700 dark:hover:shadow-slate-800"
-              style={{ height: `${PREVIEW_WINDOW.height + TITLE_HEIGHT}px` }}
-              onClick={() => {
-                setEditorInfo({
-                  show: true,
-                  pageName: page.originalName,
-                });
-              }}
-            >
-              <div
-                className="h-48 overflow-hidden flex justify-center items-center bg-white relative"
-                style={{ height: `${PREVIEW_WINDOW.height}px` }}
-              >
-                {page.drawSvg && <SVGComponent svgElement={page.drawSvg} />}
-                <div className="w-full h-full absolute">
-                  <div className="bg-slate-400 h-7 flex justify-end items-center w-full px-2 opacity-50">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <MoreHorizontal size="16" />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuItem>
-                          <Edit3 className="mr-2 h-4 w-4" /> Rename
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Tag className="mr-2 h-4 w-4" /> Set Tag
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Image className="mr-2 h-4 w-4" /> Copy Renderer Text
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                          <div className="text-rose-500 flex">
-                            <Trash2 className="mr-2 h-4 w-4" /> Delete
-                          </div>
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="truncate border-t px-2 flex items-center bg-stone-100 dark:bg-slate-800"
-                style={{ height: `${TITLE_HEIGHT}px` }}
-              >
-                {page.drawAlias || page.name}
-              </div>
-            </div>
+            <DrawingCard page={page} onClickDrawing={onClickDrawing} />
           ))}
         </section>
         {editorInfo.show && editorInfo.pageName && (
