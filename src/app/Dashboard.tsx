@@ -56,6 +56,9 @@ const DashboardApp = () => {
       pageName: page.originalName,
     });
   };
+  const onDeleteDrawing = (page: IPageWithDrawing) => {
+    setAllPages(allPages.filter((p) => p.originalName !== page.originalName));
+  };
 
   useEffect(() => {
     getExcalidrawPages().then(async (pages) => {
@@ -91,6 +94,7 @@ const DashboardApp = () => {
           drawSvg: svg,
           drawAlias,
           drawTag,
+          drawRawBlocks: rawBlocks,
         };
       });
       setAllPages(await Promise.all(promises));
@@ -130,7 +134,11 @@ const DashboardApp = () => {
           }}
         >
           {pagesAfterFilter.map((page) => (
-            <DrawingCard page={page} onClickDrawing={onClickDrawing} />
+            <DrawingCard
+              page={page}
+              onClickDrawing={onClickDrawing}
+              onDelete={onDeleteDrawing}
+            />
           ))}
         </section>
         {editorInfo.show && editorInfo.pageName && (

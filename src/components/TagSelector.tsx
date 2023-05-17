@@ -26,7 +26,8 @@ const TagSelector: React.FC<{
   showAdd?: boolean;
   onChange: (value: string) => void;
   asFilter?: boolean;
-}> = ({ value, onChange, showAdd = false, asFilter = false }) => {
+  className?: string;
+}> = ({ value, onChange, showAdd = false, asFilter = false, className }) => {
   const [open, setOpen] = useState(false);
   const [tags = [], setTags] = useAtom(tagsAtom);
   const tagOptions = tags?.map((tag) => ({
@@ -61,7 +62,7 @@ const TagSelector: React.FC<{
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         {asFilter ? (
-          <Button variant="outline" className="border-dashed">
+          <Button variant="outline" className={cn("border-dashed", className)}>
             <PlusCircle className="mr-2 h-4 w-4" />
             Tag
             {value && (

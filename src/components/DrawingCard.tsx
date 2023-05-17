@@ -6,7 +6,7 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
-import { type PageEntity } from "@logseq/libs/dist/LSPlugin";
+import { BlockEntity, type PageEntity } from "@logseq/libs/dist/LSPlugin";
 import { Trash2, Edit3, Tag, Image } from "lucide-react";
 import SVGComponent from "@/components/SVGComponent";
 import copy from "copy-to-clipboard";
@@ -22,6 +22,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
+import EditDrawingInfoModal, { EditTypeEnum } from "./EditDrawingInfoModal";
 
 export const PREVIEW_WINDOW = {
   width: 280,
@@ -32,12 +33,14 @@ export type IPageWithDrawing = PageEntity & {
   drawSvg: SVGSVGElement;
   drawAlias?: string;
   drawTag?: string;
+  drawRawBlocks: BlockEntity[];
 };
 
 const DrawingCard: React.FC<{
   page: IPageWithDrawing;
   onClickDrawing: (page: IPageWithDrawing) => void;
-}> = ({ page, onClickDrawing }) => {
+  onDelete: (page: IPageWithDrawing) => void;
+}> = ({ page, onClickDrawing, onDelete }) => {
   const { toast } = useToast();
   const onClickCopyRendererText = () => {
     copy(`{{renderer excalidraw-menu, ${page.originalName}}}`, {
@@ -55,7 +58,7 @@ const DrawingCard: React.FC<{
       title: "Deleted",
       description: "Page deleted successfully",
     });
-    // TODO: refresh drawing list
+    onDelete(page);
   };
   return (
     <div
@@ -72,22 +75,6 @@ const DrawingCard: React.FC<{
             {page.drawTag}
           </div>
         )}
-        <AlertDialog>
-          <AlertDialogTrigger>Open</AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you sure absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction>Continue</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
 
         <ContextMenu>
           <ContextMenuTrigger>
@@ -96,11 +83,19 @@ const DrawingCard: React.FC<{
             </div>
           </ContextMenuTrigger>
           <ContextMenuContent>
-            <ContextMenuItem>
-              <Edit3 className="mr-2 h-4 w-4" /> Rename
+            <ContextMenuItem asChild>
+              <EditDrawingInfoModal type={EditTypeEnum.Name} drawingData={page}>
+                <div className="flex items-center text-slate-700 text-base px-2 py-[6px] cursor-default hover:bg-slate-100">
+                  <Edit3 className="mr-2 h-4 w-4" /> Rename
+                </div>
+              </EditDrawingInfoModal>
             </ContextMenuItem>
-            <ContextMenuItem>
-              <Tag className="mr-2 h-4 w-4" /> Set Tag
+            <ContextMenuItem asChild>
+              <EditDrawingInfoModal type={EditTypeEnum.Tag} drawingData={page}>
+                <div className="flex items-center text-slate-700 text-base px-2 py-[6px] cursor-default hover:bg-slate-100">
+                  <Tag className="mr-2 h-4 w-4" /> Set Tag
+                </div>
+              </EditDrawingInfoModal>
             </ContextMenuItem>
             <ContextMenuItem onClick={onClickCopyRendererText}>
               <Image className="mr-2 h-4 w-4" /> Copy Renderer Text
@@ -108,8 +103,8 @@ const DrawingCard: React.FC<{
             <ContextMenuSeparator />
             <ContextMenuItem asChild>
               <AlertDialog>
-                <AlertDialogTrigger>
-                  <div className="text-rose-500 flex items-center">
+                <AlertDialogTrigger asChild>
+                  <div className="text-rose-500 flex items-center px-2 py-[6px] cursor-default hover:bg-slate-100">
                     <Trash2 className="mr-2 h-4 w-4" /> Delete
                   </div>
                 </AlertDialogTrigger>
