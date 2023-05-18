@@ -34,6 +34,7 @@ const EditDrawingInfoModal: React.FC<
 > = ({ type, children, drawingData }) => {
   const [name, setName] = useState(drawingData?.drawAlias || "");
   const [tag, setTag] = useState(drawingData?.drawTag || "");
+  const [isOpen, setIsOpen] = useState(false);
 
   const { toast } = useToast();
 
@@ -73,10 +74,12 @@ const EditDrawingInfoModal: React.FC<
         _tag
       );
     }
+    toast({ title: "Saved" });
+    setIsOpen(false);
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
