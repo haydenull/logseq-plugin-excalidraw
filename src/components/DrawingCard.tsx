@@ -80,15 +80,9 @@ const DrawingCard: React.FC<{
         style={{ height: `${PREVIEW_WINDOW.height + TITLE_HEIGHT}px` }}
       >
         <div
-          className="h-48 overflow-hidden flex justify-center items-center bg-white relative"
+          className="h-48 overflow-hidden flex justify-center items-center bg-white dark:bg-[#121212] relative"
           style={{ height: `${PREVIEW_WINDOW.height}px` }}
         >
-          {page.drawTag && (
-            <div className="absolute top-0 right-0 bg-slate-300 px-2 rounded-bl-md text-sm text-slate-600">
-              {page.drawTag}
-            </div>
-          )}
-
           <ContextMenu>
             <ContextMenuTrigger>
               <div onClick={() => onClickDrawing(page)}>
@@ -136,6 +130,11 @@ const DrawingCard: React.FC<{
               </ContextMenuItem>
             </ContextMenuContent>
           </ContextMenu>
+          {page.drawTag && (
+            <div className="absolute top-0 right-0 bg-slate-300 px-2 rounded-bl-md text-sm text-slate-600">
+              {page.drawTag}
+            </div>
+          )}
         </div>
         <div
           className="truncate border-t px-2 flex items-center bg-stone-100 dark:bg-slate-800"

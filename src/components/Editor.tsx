@@ -110,7 +110,6 @@ const Editor: React.FC<
         console.log("[faiz:] === end save");
         dismiss();
         onClose?.();
-        logseq.hideMainUI();
       }
     }, WAIT + 100);
   };

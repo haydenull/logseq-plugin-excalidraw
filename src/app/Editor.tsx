@@ -17,6 +17,7 @@ const EditorApp: React.FC<{ pageName: string; renderSlotId?: string }> = ({
       const { excalidrawData } = await getExcalidrawInfoFromPage(pageName);
       insertSVG(renderSlotId, undefined, excalidrawData);
     }
+    logseq.hideMainUI();
   };
   useEffect(() => {
     getTags().then(setTags);

@@ -40,7 +40,7 @@ const bootModels = (renderApp: (props: RenderAppProps) => void) => {
       logseq.App.pushState("page", { name: pageName });
     },
     showDashboard() {
-      // @ts-ignore
+      // @ts-ignore do not need pageName
       renderApp({ mode: "dashboard" });
       logseq.showMainUI();
     },

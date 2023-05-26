@@ -13,6 +13,7 @@ import { Label } from "./ui/label";
 import { IPageWithDrawing } from "./DrawingCard";
 import TagSelector from "./TagSelector";
 import { useToast } from "./ui/use-toast";
+import { createDrawing } from "@/lib/utils";
 
 export enum EditTypeEnum {
   Name,
@@ -42,15 +43,14 @@ const EditDrawingInfoModal: React.FC<{
   const onClickSave = async () => {
     const _name = name?.trim() ?? "";
     const _tag = tag?.trim() ?? "";
-    // TODO: refresh page list
     if (type === EditTypeEnum.Create) {
       if (!_name) {
         return toast({ title: "Name is required", variant: "destructive" });
       }
-      // extract a common method to create a new page
-      // await logseq.Editor.createPage({
-
-      // })
+      let params: Record<string, string> = {};
+      if (_name) params.alias = _name;
+      if (_tag) params.tag = _tag;
+      await createDrawing(params);
       toast({ title: "Created" });
       onOpenChange(false);
       onOk?.();

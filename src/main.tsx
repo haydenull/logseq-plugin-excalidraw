@@ -45,14 +45,17 @@ if (isDevelopment) {
       }
     });
 
+    // fix: https://github.com/haydenull/logseq-plugin-excalidraw/issues/6
+    logseq.setMainUIInlineStyle({ zIndex: 9999 });
+
     bootModels(renderApp);
 
     // toolbar item
-    // logseq.App.registerUIItem("toolbar", {
-    //   key: "logseq-plugin-excalidraw",
-    //   template:
-    //     '<a data-on-click="show" class="button"><i class="ti ti-window"></i></a>',
-    // });
+    logseq.App.registerUIItem("toolbar", {
+      key: "logseq-plugin-excalidraw",
+      template:
+        '<a data-on-click="showDashboard" class="button"><i class="ti ti-scribble"></i></a>',
+    });
 
     // render excalidraw block svg
     bootRenderBlockImage();

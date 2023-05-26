@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 html, body {
-  background-color: transparent;
   @apply dark:bg-slate-900;
 }
 #root {

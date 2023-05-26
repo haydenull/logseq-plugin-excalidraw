@@ -1,5 +1,5 @@
 import { Toaster } from "@/components/ui/toaster";
-import { X } from "lucide-react";
+import { LogOut, X } from "lucide-react";
 import Editor, { EditorTypeEnum, Theme } from "@/components/Editor";
 import {
   getExcalidrawInfoFromPage,
@@ -18,18 +18,29 @@ import DrawingCard, {
   PREVIEW_WINDOW,
   type IPageWithDrawing,
 } from "@/components/DrawingCard";
+import CreateDrawingModal, {
+  EditTypeEnum,
+} from "@/components/EditDrawingInfoModal";
 
+/**
+ * Get all drawing pages and generate svg for each page
+ */
 const getAllPages = async (): Promise<IPageWithDrawing[]> => {
   const pages = await getExcalidrawPages();
   if (!pages) return [];
 
+  const theme = await logseq.App.getStateFromStore<Theme>("ui/theme");
   const promises = pages.map(async (page) => {
     const { excalidrawData, rawBlocks } = await getExcalidrawInfoFromPage(
       page.name
     );
     const svg = await exportToSvg({
       elements: excalidrawData?.elements ?? [],
-      appState: excalidrawData?.appState ?? {},
+      // appState: ,
+      appState: {
+        ...(excalidrawData?.appState ?? {}),
+        exportWithDarkMode: theme === "dark",
+      },
       exportPadding: 20,
       files: excalidrawData?.files ?? null,
     });
@@ -62,7 +73,7 @@ const getAllPages = async (): Promise<IPageWithDrawing[]> => {
 
 const DashboardApp = () => {
   const [allPages, setAllPages] = useState<IPageWithDrawing[]>([]);
-  console.log("[faiz:] === allPages", allPages);
+  const [openCreateDrawingModal, setOpenCreateDrawingModal] = useState(false);
   const [editorInfo, setEditorInfo] = useState<{
     show: boolean;
     pageName?: string;
@@ -132,7 +143,15 @@ const DashboardApp = () => {
                 Reset <X size="16" className="ml-2" />
               </Button>
             ) : null}
-            {/* <Button>Create</Button> */}
+            <Button
+              className="ml-10"
+              onClick={() => setOpenCreateDrawingModal(true)}
+            >
+              Create
+            </Button>
+            <Button variant="outline" onClick={() => logseq.hideMainUI()}>
+              <LogOut size="15" />
+            </Button>
           </div>
         </div>
         <section
@@ -162,6 +181,12 @@ const DashboardApp = () => {
         )}
       </div>
       <Toaster />
+      <CreateDrawingModal
+        type={EditTypeEnum.Create}
+        open={openCreateDrawingModal}
+        onOpenChange={setOpenCreateDrawingModal}
+        onOk={refresh}
+      />
     </>
   );
 };

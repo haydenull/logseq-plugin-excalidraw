@@ -190,16 +190,22 @@ export const setTheme = (theme: Theme = "light") => {
   }
 };
 
-// TODO: supports aliasName and project
-export const createDrawing = async () => {
+export const createDrawing = async (
+  params?: Partial<{ alias: string; tag: string }>
+) => {
   const { createDrawing: i18nCreateDrawing } = getI18N();
   const fileName = "excalidraw-" + dayjs().format("YYYY-MM-DD-HH-mm-ss");
   try {
-    const page = await logseq.Editor.createPage(
-      fileName,
-      { "excalidraw-plugin": "true" },
-      { format: "markdown", redirect: false }
-    );
+    let pageProperty = {
+      "excalidraw-plugin": "true",
+    };
+    const { tag, alias } = params || {};
+    if (alias) pageProperty["excalidraw-plugin-alias"] = alias;
+    if (tag) pageProperty["excalidraw-plugin-tag"] = tag;
+    const page = await logseq.Editor.createPage(fileName, pageProperty, {
+      format: "markdown",
+      redirect: false,
+    });
     await logseq.Editor.appendBlockInPage(
       page!.originalName,
       EXCALIDRAW_FILE_PROMPT
