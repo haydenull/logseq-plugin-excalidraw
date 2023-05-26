@@ -1,3 +1,16 @@
+# [1.3.0](https://github.com/haydenull/logseq-plugin-excalidraw/compare/v1.2.0...v1.3.0) (2023-05-26)
+
+
+### Bug Fixes
+
+* :bug: adapt preview image to dark mode ([cea8ef3](https://github.com/haydenull/logseq-plugin-excalidraw/commit/cea8ef33ff373e15cd12bf624fd952bde0694eeb))
+
+
+### Features
+
+* :sparkles: add filter ([0615297](https://github.com/haydenull/logseq-plugin-excalidraw/commit/061529785e0e61183265c9ec8300ab8e704d958d))
+* support filter ([38bce57](https://github.com/haydenull/logseq-plugin-excalidraw/commit/38bce57913f63994802e203c63136cc48af9049d))
+
 # [1.2.0](https://github.com/haydenull/logseq-plugin-excalidraw/compare/v1.1.0...v1.2.0) (2023-04-30)
 
 
