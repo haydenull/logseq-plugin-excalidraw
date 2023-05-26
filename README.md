@@ -56,8 +56,19 @@ Another point is that the plugin will remain synchronized with the official vers
 - [x] full-screen operation
 - [x] support excalidraw library
 - [x] customize font family
-- [ ] customize drawing name
-- [ ] drawing management dashboard
+- [x] customize drawing name
+- [x] drawing management dashboard
+
+## Screenshots
+
+### Dashboard
+![dashboard](./screenshots/dashboard.png)
+
+### Editor
+![editor](./screenshots/editor.png)
+
+### Preview
+![preview](./screenshots/preview.png)
 
 ## Contributing
 

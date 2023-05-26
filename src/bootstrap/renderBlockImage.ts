@@ -1,3 +1,4 @@
+import { Theme } from "@/components/Editor";
 import { NEW_FILE_EXCALIDRAW_DATA } from "@/lib/constants";
 import { getExcalidrawInfoFromPage } from "@/lib/utils";
 import getI18N from "@/locales";
@@ -11,10 +12,15 @@ export const insertSVG = async (
   svg?: SVGSVGElement,
   excalidrawData?: ExcalidrawData
 ) => {
+  const theme = await logseq.App.getStateFromStore<Theme>("ui/theme");
   const _svg =
     svg ??
     (await exportToSvg(
-      excalidrawData ?? { elements: [], appState: {}, files: null }
+      excalidrawData ?? {
+        elements: [],
+        appState: { exportWithDarkMode: theme === "dark" },
+        files: null,
+      }
     ));
   setTimeout(() => {
     // remove svg if it exists
@@ -71,13 +77,20 @@ const bootRenderBlockImage = () => {
         const id = `excalidraw-${pageName}-${slot}`;
 
         const isNewFile = elements?.length === 0 && appState === undefined;
+        const theme = await logseq.App.getStateFromStore<Theme>("ui/theme");
 
         const svg = await exportToSvg(
           isNewFile
-            ? NEW_FILE_EXCALIDRAW_DATA
+            ? {
+                ...NEW_FILE_EXCALIDRAW_DATA,
+                appState: { exportWithDarkMode: theme === "dark" },
+              }
             : {
                 elements,
-                appState,
+                appState: {
+                  ...(appState ?? {}),
+                  exportWithDarkMode: theme === "dark",
+                },
                 files,
               }
         );

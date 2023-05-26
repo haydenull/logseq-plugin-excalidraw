@@ -3,6 +3,7 @@ import { getExcalidrawInfoFromPage } from "@/lib/utils";
 import { exportToSvg } from "@excalidraw/excalidraw";
 import { TbZoomInFilled, TbZoomOutFilled } from "react-icons/tb";
 import { AiFillCloseCircle } from "react-icons/ai";
+import { Theme } from "./Editor";
 
 const Preview: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
   pageName,
@@ -12,9 +13,13 @@ const Preview: React.FC<React.PropsWithChildren<{ pageName: string }>> = ({
   useEffect(() => {
     if (pageName) {
       getExcalidrawInfoFromPage(pageName).then(async ({ excalidrawData }) => {
+        const theme = await logseq.App.getStateFromStore<Theme>("ui/theme");
         const svg = await exportToSvg({
           elements: excalidrawData?.elements ?? [],
-          appState: excalidrawData?.appState ?? {},
+          appState: {
+            ...(excalidrawData?.appState ?? {}),
+            exportWithDarkMode: theme === "dark",
+          },
           files: excalidrawData?.files ?? null,
         });
         const width = Number(svg.getAttribute("width")) || 100;

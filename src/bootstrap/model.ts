@@ -39,6 +39,11 @@ const bootModels = (renderApp: (props: RenderAppProps) => void) => {
       if (!pageName) return logseq.UI.showMsg(i18nCommon.pageNotFound);
       logseq.App.pushState("page", { name: pageName });
     },
+    showDashboard() {
+      // @ts-ignore do not need pageName
+      renderApp({ mode: "dashboard" });
+      logseq.showMainUI();
+    },
   });
 };
 
