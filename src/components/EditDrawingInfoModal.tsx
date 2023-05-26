@@ -26,12 +26,13 @@ const TITLE = {
   [EditTypeEnum.Create]: "Create new drawing",
 };
 
-const EditDrawingInfoModal: React.FC<
-  React.PropsWithChildren<{
-    type: EditTypeEnum;
-    drawingData?: IPageWithDrawing;
-  }>
-> = ({ type, children, drawingData }) => {
+const EditDrawingInfoModal: React.FC<{
+  type: EditTypeEnum;
+  drawingData?: IPageWithDrawing;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onOk?: () => void;
+}> = ({ type, drawingData, open, onOpenChange, onOk }) => {
   const [name, setName] = useState(drawingData?.drawAlias || "");
   const [tag, setTag] = useState(drawingData?.drawTag || "");
   const [isOpen, setIsOpen] = useState(false);
@@ -50,6 +51,9 @@ const EditDrawingInfoModal: React.FC<
       // await logseq.Editor.createPage({
 
       // })
+      toast({ title: "Created" });
+      onOpenChange(false);
+      onOk?.();
       return;
     }
 
@@ -75,12 +79,12 @@ const EditDrawingInfoModal: React.FC<
       );
     }
     toast({ title: "Saved" });
-    setIsOpen(false);
+    onOpenChange(false);
+    onOk?.();
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{TITLE[type]}</DialogTitle>

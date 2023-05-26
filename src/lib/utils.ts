@@ -15,13 +15,15 @@ import type {
 import {
   APP_STATE_PROPERTIES,
   DEFAULT_EXCALIDRAW_DATA,
-} from "../lib/constants";
+  EXCALIDRAW_FILE_PROMPT,
+} from "./constants";
 import type {
   AppState,
   LibraryItems,
 } from "@excalidraw/excalidraw/types/types";
 import getI18N, { DEFAULT_LANGUAGE, LANGUAGES } from "@/locales";
 import { Theme } from "@/components/Editor";
+import dayjs from "dayjs";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -150,7 +152,7 @@ export const getSettingsSchema =
 /**
  * get excalidraw pages
  */
-export const getExcalidrawPages = async () => {
+export const getExcalidrawPages = async (): Promise<PageEntity[] | null> => {
   return logseq.DB.q(`(page-property :excalidraw-plugin "true")`);
 };
 
@@ -185,5 +187,34 @@ export const setTheme = (theme: Theme = "light") => {
     document.documentElement.classList.remove("dark");
   } else {
     document.documentElement.classList.add("dark");
+  }
+};
+
+// TODO: supports aliasName and project
+export const createDrawing = async () => {
+  const { createDrawing: i18nCreateDrawing } = getI18N();
+  const fileName = "excalidraw-" + dayjs().format("YYYY-MM-DD-HH-mm-ss");
+  try {
+    const page = await logseq.Editor.createPage(
+      fileName,
+      { "excalidraw-plugin": "true" },
+      { format: "markdown", redirect: false }
+    );
+    await logseq.Editor.appendBlockInPage(
+      page!.originalName,
+      EXCALIDRAW_FILE_PROMPT
+    );
+    await logseq.Editor.appendBlockInPage(
+      page!.originalName,
+      `{{renderer excalidraw-menu, ${fileName}}}`
+    );
+    await logseq.Editor.appendBlockInPage(
+      page!.originalName,
+      genBlockData(DEFAULT_EXCALIDRAW_DATA)
+    );
+    return { ...page, fileName };
+  } catch (error) {
+    logseq.UI.showMsg(i18nCreateDrawing.errorMsg, "error");
+    console.error("[faiz:] === create excalidraw error", error);
   }
 };

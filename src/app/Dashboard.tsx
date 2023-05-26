@@ -19,6 +19,47 @@ import DrawingCard, {
   type IPageWithDrawing,
 } from "@/components/DrawingCard";
 
+const getAllPages = async (): Promise<IPageWithDrawing[]> => {
+  const pages = await getExcalidrawPages();
+  if (!pages) return [];
+
+  const promises = pages.map(async (page) => {
+    const { excalidrawData, rawBlocks } = await getExcalidrawInfoFromPage(
+      page.name
+    );
+    const svg = await exportToSvg({
+      elements: excalidrawData?.elements ?? [],
+      appState: excalidrawData?.appState ?? {},
+      exportPadding: 20,
+      files: excalidrawData?.files ?? null,
+    });
+    const width = Number(svg.getAttribute("width")) || 100;
+    const height = Number(svg.getAttribute("height")) || 80;
+    // display svg in full screen based on aspect radio
+    const aspectRadio = width / height;
+    const windowAspectRadio = PREVIEW_WINDOW.width / PREVIEW_WINDOW.height;
+    if (aspectRadio > windowAspectRadio) {
+      svg.style.width = PREVIEW_WINDOW.width + "px";
+      svg.style.height = "auto";
+    } else {
+      svg.style.width = "auto";
+      svg.style.height = PREVIEW_WINDOW.height + "px";
+    }
+
+    const firstBlock = rawBlocks?.[0];
+    const drawAlias = firstBlock?.properties?.excalidrawPluginAlias;
+    const drawTag = firstBlock?.properties?.excalidrawPluginTag;
+    return {
+      ...page,
+      drawSvg: svg,
+      drawAlias,
+      drawTag,
+      drawRawBlocks: rawBlocks,
+    };
+  });
+  return Promise.all(promises);
+};
+
 const DashboardApp = () => {
   const [allPages, setAllPages] = useState<IPageWithDrawing[]>([]);
   console.log("[faiz:] === allPages", allPages);
@@ -60,45 +101,12 @@ const DashboardApp = () => {
     setAllPages(allPages.filter((p) => p.originalName !== page.originalName));
   };
 
-  useEffect(() => {
-    getExcalidrawPages().then(async (pages) => {
-      if (!pages) return;
-      const promises = pages.map(async (page) => {
-        const { excalidrawData, rawBlocks } = await getExcalidrawInfoFromPage(
-          page.name
-        );
-        const svg = await exportToSvg({
-          elements: excalidrawData?.elements ?? [],
-          appState: excalidrawData?.appState ?? {},
-          exportPadding: 20,
-          files: excalidrawData?.files ?? null,
-        });
-        const width = Number(svg.getAttribute("width")) || 100;
-        const height = Number(svg.getAttribute("height")) || 80;
-        // display svg in full screen based on aspect radio
-        const aspectRadio = width / height;
-        const windowAspectRadio = PREVIEW_WINDOW.width / PREVIEW_WINDOW.height;
-        if (aspectRadio > windowAspectRadio) {
-          svg.style.width = PREVIEW_WINDOW.width + "px";
-          svg.style.height = "auto";
-        } else {
-          svg.style.width = "auto";
-          svg.style.height = PREVIEW_WINDOW.height + "px";
-        }
+  const refresh = () => {
+    getAllPages().then(setAllPages);
+  };
 
-        const firstBlock = rawBlocks?.[0];
-        const drawAlias = firstBlock?.properties?.excalidrawPluginAlias;
-        const drawTag = firstBlock?.properties?.excalidrawPluginTag;
-        return {
-          ...page,
-          drawSvg: svg,
-          drawAlias,
-          drawTag,
-          drawRawBlocks: rawBlocks,
-        };
-      });
-      setAllPages(await Promise.all(promises));
-    });
+  useEffect(() => {
+    getAllPages().then(setAllPages);
   }, []);
   useEffect(() => {
     getTags().then(setTags);
@@ -138,6 +146,7 @@ const DashboardApp = () => {
               page={page}
               onClickDrawing={onClickDrawing}
               onDelete={onDeleteDrawing}
+              onChange={refresh}
             />
           ))}
         </section>
