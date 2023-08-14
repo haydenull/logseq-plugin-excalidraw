@@ -7,7 +7,7 @@ export default {
     HandDrawn: {
       title: "Hand-drawn Font Family",
       description:
-        "Custom Hand-drawn font family, , restart logseq to take effect",
+        "Custom Hand-drawn font family, restart logseq to take effect",
     },
     Normal: {
       title: "Normal Font Family",
