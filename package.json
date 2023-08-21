@@ -47,7 +47,7 @@
     "tailwindcss-animate": "^1.0.5"
   },
   "devDependencies": {
-    "@haydenull/fabric": "^0.2.2",
+    "@haydenull/fabric": "^0.2.3",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
@@ -56,7 +56,7 @@
     "@types/node": "^18.11.9",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.9",
-    "@vitejs/plugin-react": "^2.2.0",
+    "@vitejs/plugin-react": "^4.0.4",
     "autoprefixer": "^10.4.2",
     "husky": "^8.0.0",
     "lint-staged": "^14.0.0",
@@ -64,7 +64,7 @@
     "semantic-release": "^21.0.1",
     "tailwindcss": "^3.2.4",
     "typescript": "^4.9.3",
-    "vite": "^3.2.4",
+    "vite": "^4.4.9",
     "vite-plugin-importer": "^0.2.5"
   }
 }
