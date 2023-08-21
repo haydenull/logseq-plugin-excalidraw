@@ -1,5 +1,5 @@
-import { type AppState } from "@excalidraw/excalidraw/types/types";
 import { type ExcalidrawData } from "@/type";
+import { AppState } from "@excalidraw/excalidraw/types/types";
 
 export const FONT_ID = {
   "Hand-drawn": "Virgil",
@@ -71,4 +71,11 @@ export const NEW_FILE_EXCALIDRAW_DATA: ExcalidrawData = {
 export const APP_STATE_PROPERTIES: Array<keyof AppState> = [
   "gridSize",
   "viewBackgroundColor",
+  "zoom",
+  "offsetTop",
+  "offsetLeft",
+  "scrollX",
+  "scrollY",
+  "viewModeEnabled",
+  "zenModeEnabled",
 ];
