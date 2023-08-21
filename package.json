@@ -20,7 +20,6 @@
     ]
   },
   "dependencies": {
-    "@excalidraw/excalidraw": "^0.15.3",
     "@logseq/libs": "^0.0.14",
     "@radix-ui/react-alert-dialog": "^1.0.3",
     "@radix-ui/react-context-menu": "^2.1.3",
@@ -47,7 +46,8 @@
     "tailwindcss-animate": "^1.0.5"
   },
   "devDependencies": {
-    "@haydenull/fabric": "^0.2.3",
+    "@excalidraw/excalidraw": "0.15.2-bb985eb",
+    "@haydenull/fabric": "^0.2.4",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
