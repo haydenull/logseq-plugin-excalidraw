@@ -86,3 +86,16 @@ html, body {
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
+
+.custom-scroll::-webkit-scrollbar {
+  background-color: transparent;
+}
+.custom-scroll::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #e3e3e3;
+  border: 5px solid transparent;
+  border-radius: 9px;
+  background-clip: content-box;
+}
