@@ -175,7 +175,6 @@ const Editor: React.FC<
               : { theme },
             files: excalidrawData?.files || undefined,
             libraryItems,
-            scrollToContent: true,
           }}
           onChange={onExcalidrawChange}
           onLibraryChange={onLibraryChange}
