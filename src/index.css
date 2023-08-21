@@ -41,6 +41,8 @@ html, body {
     --ring: 215 20.2% 65.1%;
  
     --radius: 0.5rem;
+
+    --scroll-bar-color: #e3e3e3;
   }
  
   .dark {
@@ -74,6 +76,8 @@ html, body {
     --ring: 216 34% 17%;
  
     --radius: 0.5rem;
+
+    --scroll-bar-color: #2c3c57;
   }
 }
  
@@ -94,7 +98,7 @@ html, body {
   background-color: transparent;
 }
 .custom-scroll::-webkit-scrollbar-thumb {
-  background-color: #e3e3e3;
+  background-color: var(--scroll-bar-color);
   border: 5px solid transparent;
   border-radius: 9px;
   background-clip: content-box;
