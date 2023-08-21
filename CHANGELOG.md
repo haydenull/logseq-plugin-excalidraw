@@ -1,3 +1,17 @@
+# [1.4.0](https://github.com/haydenull/logseq-plugin-excalidraw/compare/v1.3.0...v1.4.0) (2023-08-21)
+
+
+### Bug Fixes
+
+* :bug: remove duplicate tags ([b7e6bfb](https://github.com/haydenull/logseq-plugin-excalidraw/commit/b7e6bfb7924115f7103806c35bd27c17d5e834c3))
+* :bug: remove unnecessary scrollbar from editor ([66f63a1](https://github.com/haydenull/logseq-plugin-excalidraw/commit/66f63a13f2496ea0fa884cffb70e59d3856f4c80))
+
+
+### Features
+
+* :sparkles: preview image uses alias title ([ed589c1](https://github.com/haydenull/logseq-plugin-excalidraw/commit/ed589c192bddc3e295454f06133c9ff45443d4d0))
+* :sparkles: save pan zoom view-mode status ([4f51843](https://github.com/haydenull/logseq-plugin-excalidraw/commit/4f518437eae00ec2556ec0ec6fb436c83bc3efc9))
+
 # [1.3.0](https://github.com/haydenull/logseq-plugin-excalidraw/compare/v1.2.0...v1.3.0) (2023-05-26)
 
 
