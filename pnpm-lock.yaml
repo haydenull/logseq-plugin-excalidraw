@@ -1,9 +1,6 @@
 lockfileVersion: '6.0'
 
 dependencies:
-  '@excalidraw/excalidraw':
-    specifier: ^0.15.3
-    version: 0.15.3(react-dom@18.2.0)(react@18.2.0)
   '@logseq/libs':
     specifier: ^0.0.14
     version: 0.0.14
@@ -78,9 +75,12 @@ dependencies:
     version: 1.0.5(tailwindcss@3.3.1)
 
 devDependencies:
+  '@excalidraw/excalidraw':
+    specifier: 0.15.2-bb985eb
+    version: 0.15.2-bb985eb(react-dom@18.2.0)(react@18.2.0)
   '@haydenull/fabric':
-    specifier: ^0.2.3
-    version: 0.2.3(eslint@8.47.0)(prettier@3.0.2)(typescript@4.9.5)
+    specifier: ^0.2.4
+    version: 0.2.4(eslint@8.47.0)(prettier@3.0.2)(typescript@4.9.5)
   '@semantic-release/changelog':
     specifier: ^6.0.1
     version: 6.0.3(semantic-release@21.0.1)
@@ -929,15 +929,15 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@excalidraw/excalidraw@0.15.3(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-/gpY7fgMO/AEaFLWnPqzbY8H7ly+/zocFf7D0Is5sWNMD2mhult5tana12lXKLSJ6EAz7ubo1A7LajXzvJXJDA==}
+  /@excalidraw/excalidraw@0.15.2-bb985eb(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-WxCEMdpZp77ATFzDJt87c8IFGaUGH1tT1S8NiqZCQvq7v0SF2c77bkIM4RxvAIPhKznlZxDhhFkWSJPwjc6UXA==}
     peerDependencies:
       react: ^17.0.2 || ^18.2.0
       react-dom: ^17.0.2 || ^18.2.0
     dependencies:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-    dev: false
+    dev: true
 
   /@floating-ui/core@0.7.3:
     resolution: {integrity: sha512-buc8BXHmG9l82+OQXOFU3Kr2XQx9ys01U/Q9HMIrZ300iLc8HLMgh7dcCqgYzAzf4BkoQvDcXf5Y+CuEZ5JBYg==}
@@ -963,8 +963,8 @@ packages:
       - '@types/react'
     dev: false
 
-  /@haydenull/fabric@0.2.3(eslint@8.47.0)(prettier@3.0.2)(typescript@4.9.5):
-    resolution: {integrity: sha512-sJZsaqVqcBs39lEDQ8jrJwLpPnDVJyXe3sU0pYWGZM9w4zGbIAUCQDSDU6erBJw/p1zZHw2OxUUWnnQ3ZDcy9A==}
+  /@haydenull/fabric@0.2.4(eslint@8.47.0)(prettier@3.0.2)(typescript@4.9.5):
+    resolution: {integrity: sha512-qrMiJ02zTSl3bmMxgVjz8cD6dKoZZm2pJlFsJiL3RNS9SpGqtTjRjOgFs74tS9GOem9WwXfrL0PlhtrOcvYhZQ==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     peerDependencies:
@@ -5901,7 +5901,6 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
-    dev: false
 
   /react-icons@4.8.0(react@18.2.0):
     resolution: {integrity: sha512-N6+kOLcihDiAnj5Czu637waJqSnwlMNROzVZMhfX68V/9bu9qHaMIJC4UdozWoOk57gahFCNHwVvWzm0MTzRjg==}
@@ -5995,7 +5994,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
-    dev: false
 
   /read-cache@1.0.0:
     resolution: {integrity: sha512-Owdv/Ft7IjOgm/i0xvNDZ1LrRANRfew4b2prF3OWMQLxLfu3bS8FVhCsrSCMK4lR56Y9ya+AThoTpDCTxCmpRA==}
@@ -6237,7 +6235,6 @@ packages:
     resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==}
     dependencies:
       loose-envify: 1.4.0
-    dev: false
 
   /scroll-into-view-if-needed@3.0.10:
     resolution: {integrity: sha512-t44QCeDKAPf1mtQH3fYpWz8IM/DyvHLjs8wUvvwMYxk5moOqCzrMSxK6HQVD0QVmVjXFavoFIPRVrMuJPKAvtg==}
