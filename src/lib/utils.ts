@@ -41,9 +41,7 @@ export const getExcalidrawInfoFromPage = async (
   /** page blocks */
   rawBlocks: BlockEntity[]
 }> => {
-  console.log('[faiz:] === srcPage', srcPage)
   const pageBlocks = await logseq.Editor.getPageBlocksTree(srcPage)
-  console.log('[faiz:] === pageBlocks', pageBlocks)
   const codeBlock = pageBlocks?.[3]
   const excalidrawData = getExcalidrawData(codeBlock?.content) as ExcalidrawData
   return {
@@ -188,4 +186,13 @@ export const createDrawing = async (params?: Partial<{ alias: string; tag: strin
     logseq.UI.showMsg(i18nCreateDrawing.errorMsg, 'error')
     console.error('[faiz:] === create excalidraw error', error)
   }
+}
+
+export const copyToClipboard = (text: string) => {
+  const textArea = document.createElement('textarea')
+  textArea.value = text
+  document.body.appendChild(textArea)
+  textArea.select()
+  document.execCommand('copy')
+  document.body.removeChild(textArea)
 }

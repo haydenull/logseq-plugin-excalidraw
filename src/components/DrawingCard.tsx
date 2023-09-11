@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import type { BlockEntity, PageEntity } from '@logseq/libs/dist/LSPlugin'
+import { Trash2, Edit3, Tag, Image } from 'lucide-react'
+import React, { useState } from 'react'
+
+import SVGComponent from '@/components/SVGComponent'
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
-} from "@/components/ui/context-menu";
-import { BlockEntity, type PageEntity } from "@logseq/libs/dist/LSPlugin";
-import { Trash2, Edit3, Tag, Image } from "lucide-react";
-import SVGComponent from "@/components/SVGComponent";
-import copy from "copy-to-clipboard";
-import { useToast } from "./ui/use-toast";
+} from '@/components/ui/context-menu'
+import { copyToClipboard } from '@/lib/utils'
+
+import EditDrawingInfoModal, { EditTypeEnum } from './EditDrawingInfoModal'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,57 +23,57 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "./ui/alert-dialog";
-import EditDrawingInfoModal, { EditTypeEnum } from "./EditDrawingInfoModal";
+} from './ui/alert-dialog'
+import { useToast } from './ui/use-toast'
 
 export const PREVIEW_WINDOW = {
   width: 280,
   height: 180,
-};
-const TITLE_HEIGHT = 50;
+}
+const TITLE_HEIGHT = 50
 export type IPageWithDrawing = PageEntity & {
-  drawSvg: SVGSVGElement;
-  drawAlias?: string;
-  drawTag?: string;
-  drawRawBlocks: BlockEntity[];
-};
+  drawSvg: SVGSVGElement
+  drawAlias?: string
+  drawTag?: string
+  drawRawBlocks: BlockEntity[]
+}
 
 const DrawingCard: React.FC<{
-  page: IPageWithDrawing;
-  onClickDrawing: (page: IPageWithDrawing) => void;
-  onDelete: (page: IPageWithDrawing) => void;
-  onChange?: () => void;
+  page: IPageWithDrawing
+  onClickDrawing: (page: IPageWithDrawing) => void
+  onDelete: (page: IPageWithDrawing) => void
+  onChange?: () => void
 }> = ({ page, onClickDrawing, onDelete, onChange }) => {
   const [editModalData, setEditModalData] = useState<{
-    type?: EditTypeEnum;
-    open: boolean;
-  }>();
-  const { toast } = useToast();
+    type?: EditTypeEnum
+    open: boolean
+  }>()
+  const { toast } = useToast()
 
   const openEditDialog = (type: EditTypeEnum) => {
     setEditModalData({
       type,
       open: true,
-    });
-  };
+    })
+  }
   const onClickCopyRendererText = () => {
-    copy(`{{renderer excalidraw-menu, ${page.originalName}}}`, {
-      onCopy: () => {
-        toast({
-          title: "Copied",
-          description: "Renderer text copied to clipboard successfully",
-        });
-      },
-    });
-  };
+    // The reason for delay in execution is that the copying action can only be performed after shadcn's layer disappears.
+    setTimeout(() => {
+      copyToClipboard(`{{renderer excalidraw, ${page.originalName}}}`)
+      toast({
+        title: 'Copied',
+        description: 'Renderer text copied to clipboard successfully',
+      })
+    }, 1000)
+  }
   const deleteDrawing = async () => {
-    await logseq.Editor.deletePage(page.originalName);
+    await logseq.Editor.deletePage(page.originalName)
     toast({
-      title: "Deleted",
-      description: "Page deleted successfully",
-    });
-    onDelete(page);
-  };
+      title: 'Deleted',
+      description: 'Page deleted successfully',
+    })
+    onDelete(page)
+  }
   return (
     <>
       <div
@@ -90,9 +92,7 @@ const DrawingCard: React.FC<{
               </div>
             </ContextMenuTrigger>
             <ContextMenuContent>
-              <ContextMenuItem
-                onClick={() => openEditDialog(EditTypeEnum.Name)}
-              >
+              <ContextMenuItem onClick={() => openEditDialog(EditTypeEnum.Name)}>
                 <Edit3 className="mr-2 h-4 w-4" /> Rename
               </ContextMenuItem>
               <ContextMenuItem onClick={() => openEditDialog(EditTypeEnum.Tag)}>
@@ -111,19 +111,14 @@ const DrawingCard: React.FC<{
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        Are you sure absolutely sure?
-                      </AlertDialogTitle>
+                      <AlertDialogTitle>Are you sure absolutely sure?</AlertDialogTitle>
                       <AlertDialogDescription>
-                        This action cannot be undone. This will permanently
-                        delete your drawing.
+                        This action cannot be undone. This will permanently delete your drawing.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={deleteDrawing}>
-                        Continue
-                      </AlertDialogAction>
+                      <AlertDialogAction onClick={deleteDrawing}>Continue</AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
@@ -152,7 +147,7 @@ const DrawingCard: React.FC<{
         />
       </div>
     </>
-  );
-};
+  )
+}
 
-export default DrawingCard;
+export default DrawingCard

@@ -43,9 +43,6 @@ dependencies:
   cmdk:
     specifier: ^0.2.0
     version: 0.2.0(@types/react@18.0.38)(react-dom@18.2.0)(react@18.2.0)
-  copy-to-clipboard:
-    specifier: ^3.3.3
-    version: 3.3.3
   dayjs:
     specifier: ^1.11.7
     version: 1.11.7
