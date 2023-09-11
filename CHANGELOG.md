@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/haydenull/logseq-plugin-excalidraw/compare/v1.4.0...v1.4.1) (2023-09-11)
+
+
+### Bug Fixes
+
+* :bug: copy failed ([643b3ee](https://github.com/haydenull/logseq-plugin-excalidraw/commit/643b3ee28aaf95e483e4e9d000c0fefd2c9f64bb))
+
 # [1.4.0](https://github.com/haydenull/logseq-plugin-excalidraw/compare/v1.3.0...v1.4.0) (2023-08-21)
 
 
