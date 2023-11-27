@@ -10,7 +10,7 @@ import { TbLogout, TbBrandGithub, TbArrowsMinimize } from 'react-icons/tb'
 import { getExcalidrawLibraryItems, updateExcalidrawLibraryItems } from '@/bootstrap/excalidrawLibraryItems'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
-import { genBlockData, getExcalidrawInfoFromPage, getLangCode, getMinimalAppState } from '@/lib/utils'
+import { cn, genBlockData, getExcalidrawInfoFromPage, getLangCode, getMinimalAppState } from '@/lib/utils'
 import getI18N from '@/locales'
 import type { ExcalidrawData, PluginSettings } from '@/type'
 
@@ -132,7 +132,7 @@ const Editor: React.FC<
   }, [])
 
   return (
-    <div className="w-screen h-screen">
+    <div className={cn('w-screen h-screen pt-5', { 'bg-[#121212]': theme === 'dark' })}>
       {excalidrawData && libraryItems && (
         <Excalidraw
           langCode={getLangCode((logseq.settings as unknown as PluginSettings)?.langCode)}
@@ -147,17 +147,17 @@ const Editor: React.FC<
           onChange={onExcalidrawChange}
           onLibraryChange={onLibraryChange}
           renderTopRightUI={() => (
-            <>
+            <div className="flex items-center gap-3">
               <Input placeholder="Untitled" value={aliasName} onChange={(e) => onAliasNameChange(e.target.value)} />
               <TagSelector showAdd value={tag} onChange={onTagChange} />
               <Button
                 onSelect={() => onClickClose(type)}
-                style={{ width: '38px', height: '38px', color: '#666' }}
+                style={{ width: '38px', color: '#666' }}
                 title={i18nEditor.exitButton}
               >
                 {type === EditorTypeEnum.App ? <TbLogout /> : <TbArrowsMinimize />}
               </Button>
-            </>
+            </div>
           )}
         >
           <MainMenu>
