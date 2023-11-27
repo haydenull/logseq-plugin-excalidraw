@@ -1,6 +1,6 @@
-import { Excalidraw, Button, MainMenu, WelcomeScreen } from '@excalidraw/excalidraw'
+import { Excalidraw, Button, MainMenu, WelcomeScreen, getSceneVersion } from '@excalidraw/excalidraw'
 import type { ExcalidrawElement } from '@excalidraw/excalidraw/types/element/types'
-import type { AppState, BinaryFiles } from '@excalidraw/excalidraw/types/types'
+import type { AppState, BinaryFiles, ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types/types'
 import type { LibraryItems } from '@excalidraw/excalidraw/types/types'
 import type { BlockIdentity } from '@logseq/libs/dist/LSPlugin'
 import { debounce } from 'lodash'
@@ -14,6 +14,7 @@ import { cn, genBlockData, getExcalidrawInfoFromPage, getLangCode, getMinimalApp
 import getI18N from '@/locales'
 import type { ExcalidrawData, PluginSettings } from '@/type'
 
+import SlidesPreview from './SlidesPreview'
 import TagSelector from './TagSelector'
 
 export type Theme = 'light' | 'dark'
@@ -39,6 +40,9 @@ const Editor: React.FC<
   const blockUUIDRef = useRef<string>()
   const pagePropertyBlockUUIDRef = useRef<string>()
   const currentExcalidrawDataRef = useRef<ExcalidrawData>()
+  const [currentExcalidrawData, setCurrentExcalidrawData] = useState<ExcalidrawData>()
+  const sceneVersionRef = useRef<number>()
+  const [excalidrawAPI, setExcalidrawAPI] = useState<ExcalidrawImperativeAPI | null>(null)
 
   const [aliasName, setAliasName] = useState<string>()
   const [tag, setTag] = useState<string>()
@@ -61,6 +65,16 @@ const Editor: React.FC<
         elements,
         appState,
         files,
+      }
+      const sceneVersion = getSceneVersion(elements)
+      // fix https://github.com/excalidraw/excalidraw/issues/3014
+      if (sceneVersionRef.current !== sceneVersion) {
+        sceneVersionRef.current = sceneVersion
+        setCurrentExcalidrawData({
+          elements,
+          appState,
+          files,
+        })
       }
     },
     WAIT,
@@ -132,9 +146,10 @@ const Editor: React.FC<
   }, [])
 
   return (
-    <div className={cn('w-screen h-screen pt-5', { 'bg-[#121212]': theme === 'dark' })}>
+    <div className={cn('w-screen h-screen pt-5 relative', { 'bg-[#121212]': theme === 'dark' })}>
       {excalidrawData && libraryItems && (
         <Excalidraw
+          excalidrawAPI={(api) => setExcalidrawAPI(api)}
           langCode={getLangCode((logseq.settings as unknown as PluginSettings)?.langCode)}
           initialData={{
             elements: excalidrawData.elements || [],
@@ -182,6 +197,11 @@ const Editor: React.FC<
           </WelcomeScreen>
         </Excalidraw>
       )}
+      <SlidesPreview
+        elements={currentExcalidrawData?.elements}
+        files={currentExcalidrawData?.files ?? null}
+        api={excalidrawAPI}
+      />
     </div>
   )
 }
