@@ -1,3 +1,17 @@
+# [1.5.0](https://github.com/haydenull/logseq-plugin-excalidraw/compare/v1.4.1...v1.5.0) (2023-11-28)
+
+
+### Bug Fixes
+
+* :bug: add padding top in Editor ([b688bde](https://github.com/haydenull/logseq-plugin-excalidraw/commit/b688bdeca72769f82166d6dd76087b91b3f6e279))
+
+
+### Features
+
+* :sparkles: complete slides flow ([55f585f](https://github.com/haydenull/logseq-plugin-excalidraw/commit/55f585f8abbacb79c27bafe686eafe5b1587d36d))
+* :sparkles: show slides preview ([7f548e2](https://github.com/haydenull/logseq-plugin-excalidraw/commit/7f548e2251859b36402e8747e2dcb547ca478dbd))
+* :sparkles: supports slides ([0c794f1](https://github.com/haydenull/logseq-plugin-excalidraw/commit/0c794f1beb1a6c88c2f9d7198f681606f4912f63))
+
 ## [1.4.1](https://github.com/haydenull/logseq-plugin-excalidraw/compare/v1.4.0...v1.4.1) (2023-09-11)
 
 
