@@ -3,7 +3,7 @@ import type { ExcalidrawElement } from '@excalidraw/excalidraw/types/element/typ
 import type { AppState, BinaryFiles, ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types/types'
 import type { LibraryItems } from '@excalidraw/excalidraw/types/types'
 import type { BlockIdentity } from '@logseq/libs/dist/LSPlugin'
-import { debounce } from 'lodash'
+import { debounce } from 'lodash-es'
 import React, { useEffect, useRef, useState } from 'react'
 import { TbLogout, TbBrandGithub, TbArrowsMinimize } from 'react-icons/tb'
 
@@ -201,6 +201,7 @@ const Editor: React.FC<
         elements={currentExcalidrawData?.elements}
         files={currentExcalidrawData?.files ?? null}
         api={excalidrawAPI}
+        theme={theme}
       />
     </div>
   )

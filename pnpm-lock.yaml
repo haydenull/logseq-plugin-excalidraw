@@ -53,7 +53,7 @@ dependencies:
   jotai:
     specifier: ^2.1.0
     version: 2.1.0(react@18.2.0)
-  lodash:
+  lodash-es:
     specifier: ^4.17.21
     version: 4.17.21
   lucide-react:
@@ -4546,6 +4546,7 @@ packages:
 
   /lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+    dev: true
 
   /log-update@5.0.1:
     resolution: {integrity: sha512-5UtUDQ/6edw4ofyljDNcOVJQ4c7OjDro4h3y8e1GQL5iYElYclVHJ3zeWchylvMaKnDbDilC8irOVyexnA/Slw==}
