@@ -7,12 +7,15 @@
 ## Demo
 ![demo](./demo.gif)
 
+[slides Demo](https://lusun.com/v/Y8FLjgVpM2A)
+
 ## Features
 
 - Create and edit Excalidraw drawings directly in Logseq
 - Import Excalidraw libraries for a more comprehensive drawing experience
 - Easy-to-use interface for a smooth and efficient workflow
 - Customizable font family
+- Supports slides mode
 
 ## Installation
 

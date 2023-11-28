@@ -3,7 +3,7 @@ import type { AppState, LibraryItems } from '@excalidraw/excalidraw/types/types'
 import type { BlockEntity, PageEntity, PageIdentity } from '@logseq/libs/dist/LSPlugin.user'
 import { type ClassValue, clsx } from 'clsx'
 import dayjs from 'dayjs'
-import { pick } from 'lodash'
+import { pick } from 'lodash-es'
 import { twMerge } from 'tailwind-merge'
 
 import { type Theme } from '@/components/Editor'
