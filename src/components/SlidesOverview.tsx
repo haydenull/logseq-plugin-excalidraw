@@ -32,7 +32,7 @@ const SlidesOverview = ({
     <div className={cn('p-16 bg-background/80 backdrop-blur-sm', className)}>
       {frames.length > 0 ? (
         <div
-          className="w-full h-full grid gap-8 overflow-y-auto justify-items-center"
+          className="w-full h-full grid gap-8 overflow-y-auto justify-items-center custom-scroll"
           style={{
             gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
             gridTemplateRows: 'repeat(auto-fit, 180px)',

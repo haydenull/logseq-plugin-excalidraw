@@ -57,7 +57,15 @@ type GetFramesParams = {
 function getFrames({ elements, files, theme }: GetFramesParams) {
   const frames: ExcalidrawFrameElement[] = (
     elements?.filter((element) => element.type === 'frame' && !element.isDeleted) as ExcalidrawFrameElement[]
-  )?.sort((a, b) => (a.name && b.name ? a.name.localeCompare(b.name) : a.id.localeCompare(b.id)))
+  )?.sort((a, b) => {
+    const getIndex = (name: string | null) => {
+      const defaultIndex = 9999
+      if (!name) return defaultIndex
+      const index = Number(name.split('-')[0])
+      return isNaN(index) ? defaultIndex : index
+    }
+    return getIndex(a.name) - getIndex(b.name)
+  })
   const frameChildrenElementsMap: Record<string, ExcalidrawElement[]> = groupBy(elements, (element) => element.frameId)
   return frames?.map((frame) => ({
     frameElement: frame,
