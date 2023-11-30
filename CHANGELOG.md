@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/haydenull/logseq-plugin-excalidraw/compare/v1.5.0...v1.5.1) (2023-11-30)
+
+
+### Bug Fixes
+
+* :bug: sort by using - to differentiate indexes ([75fa7c4](https://github.com/haydenull/logseq-plugin-excalidraw/commit/75fa7c4f29342cc2470316947eb6b78b448be99b))
+
 # [1.5.0](https://github.com/haydenull/logseq-plugin-excalidraw/compare/v1.4.1...v1.5.0) (2023-11-28)
 
 
